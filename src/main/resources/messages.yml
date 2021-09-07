@@ -1,0 +1,7 @@
+prefix: "&8\u2758 &a&lSTRAFES &8\u2758 "
+messages:
+   plugin:
+     no-permission: "&cYou cannot do that."
+     leap-activated: "&aLeapin'!"
+     strafes-activated: "&aStrafin'!"
+     no-space: "&cYou don't have any space in your inventory..."

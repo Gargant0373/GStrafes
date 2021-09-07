@@ -1,0 +1,9 @@
+name: Strafes
+main: gargant.strafes.main.Strafes
+version: '1.0'
+author: Gargant
+commands:
+   strafes:
+     usage: /strafes
+   leap:
+     usage: /leap
