@@ -23,6 +23,7 @@ import org.bukkit.util.Vector;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import gargant.strafes.containers.SettingsContainer;
 import masecla.mlib.annotations.RegisterableInfo;
 import masecla.mlib.classes.Registerable;
 import masecla.mlib.main.MLib;
@@ -39,11 +40,16 @@ public class StrafesCommand extends Registerable {
 	public void fallbackCommand(CommandSender sender, String[] args) {
 		if (!(sender instanceof Player))
 			return;
+		Player p = (Player) sender;
+
+		if (sender.hasPermission("strafes.settings") && args.length > 0 && args[0].equalsIgnoreCase("settings")) {
+			lib.getContainerAPI().openFor(p, SettingsContainer.class);
+			return;
+		}
 		if (!sender.hasPermission("strafes.strafes")) {
 			lib.getMessagesAPI().sendMessage("no-permission", sender);
 			return;
 		}
-		Player p = (Player) sender;
 		if (!this.hasSlots(p, 3)) {
 			lib.getMessagesAPI().sendMessage("no-space", sender);
 			return;

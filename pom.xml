@@ -6,7 +6,7 @@
 	<properties>
 		<groupid>Gargant</groupid>
 		<artifact>Strafes</artifact>
-		
+
 		<project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>Cp1252</project.reporting.outputEncoding>
 	</properties>
@@ -40,6 +40,7 @@
 							<artifactSet>
 								<includes>
 									<include>M-Lib:M-Lib</include>
+									<include>Revive:ReviveTab</include>
 								</includes>
 							</artifactSet>
 							<relocations>
@@ -59,6 +60,10 @@
 	</build>
 	<repositories>
 		<repository>
+			<id>revive-repository</id>
+			<url>https://nexus.mcrevive.net/repository/revive-snapshots/</url>
+		</repository>
+		<repository>
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/
 			</url>
@@ -69,6 +74,11 @@
 		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+			<groupId>Revive</groupId>
+			<artifactId>ReviveTab</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
