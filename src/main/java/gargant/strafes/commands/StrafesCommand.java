@@ -23,7 +23,7 @@ import org.bukkit.util.Vector;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
-import gargant.strafes.containers.SettingsContainer;
+import gargant.strafes.containers.VelocityContainer;
 import masecla.mlib.annotations.RegisterableInfo;
 import masecla.mlib.classes.Registerable;
 import masecla.mlib.main.MLib;
@@ -43,7 +43,7 @@ public class StrafesCommand extends Registerable {
 		Player p = (Player) sender;
 
 		if (sender.hasPermission("strafes.settings") && args.length > 0 && args[0].equalsIgnoreCase("settings")) {
-			lib.getContainerAPI().openFor(p, SettingsContainer.class);
+			lib.getContainerAPI().openFor(p, VelocityContainer.class);
 			return;
 		}
 		if (!sender.hasPermission("strafes.strafes")) {
@@ -109,14 +109,19 @@ public class StrafesCommand extends Registerable {
 	public void onPlace(BlockPlaceEvent event) {
 		if (event.getPlayer().getInventory().getItemInMainHand() == null)
 			return;
-		ItemMeta meta = event.getItemInHand().getItemMeta();
-		if (meta.getDisplayName().contains("Right Strafe") && !meta.getDisplayName().contains("Cooldown")) {
+		ItemStack held = event.getItemInHand();
+		@SuppressWarnings("deprecation")
+		String tag = lib.getNmsAPI().getNBTTagValueString(held, "StrafeDirection");
+		if (tag == null)
+			return;
+		switch (tag) {
+		case "RIGHT":
+		case "LEFT":
+		case "BACK":
 			event.setCancelled(true);
-		} else if (meta.getDisplayName().contains("Left Strafe") && !meta.getDisplayName().contains("Cooldown")) {
-			event.setCancelled(true);
-		} else if (meta.getDisplayName().contains("Back Strafe") && !meta.getDisplayName().contains("Cooldown")) {
-			event.setCancelled(true);
+			break;
 		}
+
 	}
 
 	private double getStrafeVelocity() {
