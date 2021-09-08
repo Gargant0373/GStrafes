@@ -4,7 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import gargant.strafes.commands.LeapCommand;
 import gargant.strafes.commands.StrafesCommand;
-import gargant.strafes.containers.SettingsContainer;
+import gargant.strafes.containers.VelocityContainer;
 import masecla.mlib.main.MLib;
 
 public class Strafes extends JavaPlugin {
@@ -15,7 +15,7 @@ public class Strafes extends JavaPlugin {
 		this.lib = new MLib(this);
 		lib.getConfigurationAPI().requireAll();
 
-		new SettingsContainer(lib).register();
+		new VelocityContainer(lib).register();
 
 		new StrafesCommand(lib).register();
 		new LeapCommand(lib).register();
