@@ -94,7 +94,7 @@ public class StrafeClickListener extends Registerable {
 		locVec = this.snapYaw(locVec);
 		locVec.setPitch(0);
 		Vector velocityVector = locVec.getDirection().multiply(-1.0).multiply(this.getStrafeVelocity());
-		velocityVector = velocityVector.setY(this.getVerticalVelocity());
+		velocityVector = velocityVector.setY(this.getStrafeVerticalVelocity());
 		player.setVelocity(velocityVector);
 	}
 
@@ -112,7 +112,7 @@ public class StrafeClickListener extends Registerable {
 		velocityVector.setX(x);
 		velocityVector.setZ(z);
 		velocityVector = velocityVector.multiply(this.getStrafeVelocity());
-		velocityVector = velocityVector.setY(this.getVerticalVelocity());
+		velocityVector = velocityVector.setY(this.getStrafeVerticalVelocity());
 		player.setVelocity(velocityVector);
 	}
 
@@ -130,7 +130,7 @@ public class StrafeClickListener extends Registerable {
 		velocityVector.setX(x);
 		velocityVector.setZ(z);
 		velocityVector = velocityVector.multiply(this.getStrafeVelocity());
-		velocityVector = velocityVector.setY(this.getVerticalVelocity());
+		velocityVector = velocityVector.setY(this.getStrafeVerticalVelocity());
 		player.setVelocity(velocityVector);
 	}
 
@@ -164,7 +164,7 @@ public class StrafeClickListener extends Registerable {
 		return (double) lib.getConfigurationAPI().getConfig().get("strafes.strafe_velocity", 1.78);
 	}
 
-	private double getVerticalVelocity() {
+	private double getStrafeVerticalVelocity() {
 		return (double) lib.getConfigurationAPI().getConfig().get("strafes.vertical_velocity", 0.3);
 	}
 

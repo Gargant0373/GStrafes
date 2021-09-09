@@ -22,14 +22,6 @@ public class BlockPlaceRestriction extends Registerable {
 		String tag = lib.getNmsAPI().getNBTTagValueString(held, "StrafeDirection");
 		if (tag == null)
 			return;
-		switch (tag) {
-		case "RIGHT":
-		case "LEFT":
-		case "BACK":
-		case "COOLDOWN":
-			event.setCancelled(true);
-			break;
-		}
 
 	}
 
