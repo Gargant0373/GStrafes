@@ -105,17 +105,17 @@ public class CooldownsContainer extends ImmutableContainer {
 		inv.setItem(20, this.getIncrement(-5, "Strafes"));
 		inv.setItem(21, this.getIncrement(-1, "Strafes"));
 		inv.setItem(22, this.getStrafeItem());
-		inv.setItem(23, this.getIncrement(+1, "Strafes"));
-		inv.setItem(24, this.getIncrement(+5, "Strafes"));
-		inv.setItem(25, this.getIncrement(+10, "Strafes"));
+		inv.setItem(23, this.getIncrement(1, "Strafes"));
+		inv.setItem(24, this.getIncrement(5, "Strafes"));
+		inv.setItem(25, this.getIncrement(10, "Strafes"));
 
 		inv.setItem(37, this.getIncrement(-10, "Leap"));
 		inv.setItem(38, this.getIncrement(-5, "Leap"));
 		inv.setItem(39, this.getIncrement(-1, "Leap"));
 		inv.setItem(40, this.getLeap());
-		inv.setItem(41, this.getIncrement(+1, "Leap"));
-		inv.setItem(42, this.getIncrement(+5, "Leap"));
-		inv.setItem(43, this.getIncrement(+10, "Leap"));
+		inv.setItem(41, this.getIncrement(1, "Leap"));
+		inv.setItem(42, this.getIncrement(5, "Leap"));
+		inv.setItem(43, this.getIncrement(10, "Leap"));
 
 		inv = this.applyMarginalBars(inv);
 		inv.setItem(49, this.getInventoryClose());
@@ -125,7 +125,8 @@ public class CooldownsContainer extends ImmutableContainer {
 	private ItemStack getIncrement(int amount, String type) {
 		ItemStack result = new ItemStack(Material.WOOL, 1, (byte) this.getColorFor(amount));
 		ItemMeta meta = result.getItemMeta();
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&2" + amount + " &a Second Cooldown"));
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&2" + (amount > 0 ? "+" : "") + amount
+				+ " &aSecond" + (Math.abs(amount) == 1 ? "" : "s") + " to Cooldown"));
 		meta.setLore(Arrays.asList("", ChatColor.GRAY + "Click to use!"));
 		result.setItemMeta(meta);
 		return lib.getNmsAPI().write().tagString("INCREMENT", amount + "_" + type.toLowerCase()).applyOn(result);
@@ -201,7 +202,8 @@ public class CooldownsContainer extends ImmutableContainer {
 		thelore.add("");
 		int cooldown = (int) lib.getConfigurationAPI().getConfig().get("strafes.cooldown", 10);
 		if (cooldown != -1)
-			thelore.add(ChatColor.translateAlternateColorCodes('&', "&2" + cooldown + " &aStrafe Cooldown"));
+			thelore.add(ChatColor.translateAlternateColorCodes('&',
+					"&2" + cooldown + " &aSecond" + (cooldown == 1 ? "" : "s")));
 		else
 			thelore.add(ChatColor.translateAlternateColorCodes('&', "&c&lDISABLED"));
 		thelore.add("");
@@ -235,7 +237,8 @@ public class CooldownsContainer extends ImmutableContainer {
 		thelore.add("");
 		int cooldown = (int) lib.getConfigurationAPI().getConfig().get("leap.cooldown", 10);
 		if (cooldown != -1)
-			thelore.add(ChatColor.translateAlternateColorCodes('&', "&2" + cooldown + " &aLeap Cooldown"));
+			thelore.add(ChatColor.translateAlternateColorCodes('&',
+					"&2" + cooldown + " &aSecond" + (cooldown == 1 ? "" : "s")));
 		else
 			thelore.add(ChatColor.translateAlternateColorCodes('&', "&c&lDISABLED"));
 		thelore.add(ChatColor.GRAY + "Click to reset to default!");
