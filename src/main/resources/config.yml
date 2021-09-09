@@ -11,6 +11,8 @@ heads:
 leap:
   leap_velocity: 1.5
   vertical_velocity: 0.4
+  cooldown: 8 # -1 for disabled
 strafes:
   strafe_velocity: 1.78
   vertical_velocity: 0.3
+  cooldown: 20 # -1 for disabled
