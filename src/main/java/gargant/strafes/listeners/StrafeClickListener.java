@@ -52,7 +52,6 @@ public class StrafeClickListener extends Registerable {
 		if (tag == null)
 			return;
 		if (event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
-			event.setCancelled(true);
 			return;
 		} else if (event.getAction().equals(Action.RIGHT_CLICK_AIR)
 				|| event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
