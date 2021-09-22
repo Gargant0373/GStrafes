@@ -1,5 +1,6 @@
 package gargant.strafes.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,8 +11,14 @@ import gargant.strafes.classes.Items;
 import gargant.strafes.containers.CooldownsContainer;
 import gargant.strafes.containers.VelocityContainer;
 import masecla.mlib.annotations.RegisterableInfo;
+import masecla.mlib.annotations.SubcommandInfo;
 import masecla.mlib.classes.Registerable;
 import masecla.mlib.main.MLib;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 @RegisterableInfo(command = "strafes")
 public class StrafesCommand extends Registerable {
@@ -23,20 +30,40 @@ public class StrafesCommand extends Registerable {
 		this.items = items;
 	}
 
+	@SubcommandInfo(subcommand = "velocity", permission = "strafes.velocity")
+	public void velocityContainer(Player p) {
+		lib.getContainerAPI().openFor(p, VelocityContainer.class);
+	}
+
+	@SubcommandInfo(subcommand = "cooldowns", permission = "strafes.cooldowns")
+	public void cooldownContainer(Player p) {
+		lib.getContainerAPI().openFor(p, CooldownsContainer.class);
+	}
+
+	@SubcommandInfo(subcommand = "help", permission = "strafes.help")
+	public void helpCommand(Player p) {
+		p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+				"&a&lStrafes &2v" + lib.getPlugin().getDescription().getVersion() + " &7- &fby Gargant"));
+		p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a/strafes &7- &fAdd strafes to the inventory."));
+		p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a/leap &7- &fAdd the leap to your inventory."));
+		p.sendMessage(
+				ChatColor.translateAlternateColorCodes('&', "&a/strafes cooldowns &7- &fOpen the Settings container."));
+		p.sendMessage(
+				ChatColor.translateAlternateColorCodes('&', "&a/strafes velocity &7- &fOpen the Velocity container."));
+		ComponentBuilder b = new ComponentBuilder(ChatColor.WHITE + "Enjoy strafing? Rate this plugin!");
+		b.event(new ClickEvent(Action.OPEN_URL,
+				"https://www.spigotmc.org/resources/%E2%9C%A8-restrafes-strafe-around-your-world-%E2%9C%A8.96036/"));
+		b.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+				TextComponent.fromLegacyText(ChatColor.WHITE + "Click to open!")));
+		p.spigot().sendMessage(b.create());
+	}
+
 	@Override
 	public void fallbackCommand(CommandSender sender, String[] args) {
 		if (!(sender instanceof Player))
 			return;
 		Player p = (Player) sender;
 
-		if (sender.hasPermission("strafes.velocity") && args.length > 0 && args[0].equalsIgnoreCase("velocity")) {
-			lib.getContainerAPI().openFor(p, VelocityContainer.class);
-			return;
-		}
-		if (sender.hasPermission("strafes.cooldowns") && args.length > 0 && args[0].equalsIgnoreCase("cooldowns")) {
-			lib.getContainerAPI().openFor(p, CooldownsContainer.class);
-			return;
-		}
 		if (!sender.hasPermission("strafes.strafes")) {
 			lib.getMessagesAPI().sendMessage("no-permission", sender);
 			return;

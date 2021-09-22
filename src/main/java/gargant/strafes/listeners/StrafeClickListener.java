@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -19,6 +18,7 @@ import org.bukkit.util.Vector;
 import gargant.strafes.classes.Cooldown;
 import gargant.strafes.classes.Cooldown.CooldownType;
 import gargant.strafes.classes.Items;
+import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.classes.Registerable;
 import masecla.mlib.main.MLib;
 
@@ -52,6 +52,14 @@ public class StrafeClickListener extends Registerable {
 		if (tag == null)
 			return;
 		if (event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+			switch (tag) {
+			case "RIGHT":
+			case "LEFT":
+			case "BACK":
+			case "LEAP":
+				event.setCancelled(true);
+				return;
+			}
 			return;
 		} else if (event.getAction().equals(Action.RIGHT_CLICK_AIR)
 				|| event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
@@ -84,7 +92,7 @@ public class StrafeClickListener extends Registerable {
 			this.justClicked.add(p.getUniqueId());
 			Bukkit.getScheduler().scheduleSyncDelayedTask(lib.getPlugin(), () -> {
 				this.justClicked.remove(p.getUniqueId());
-			}, 10);
+			}, 2);
 		}
 	}
 
@@ -183,12 +191,19 @@ public class StrafeClickListener extends Registerable {
 		return lib.getConfigurationAPI().getConfig().getInt("leap.cooldown", 8);
 	}
 
+	private org.bukkit.Sound strafeSound = null;
+	private org.bukkit.Sound leapSound = null;
+
 	private void playStrafeSound(Player player) {
-		player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 0.6f);
+		if (strafeSound == null)
+			strafeSound = Sound.CHICKEN_EGG_POP.bukkitSound();
+		player.playSound(player.getLocation(), strafeSound, 1, 0.6f);
 	}
 
 	private void applyLeapSound(Player p) {
-		p.playSound(p.getLocation(), Sound.ENTITY_ENDERDRAGON_FLAP, 0.6f, 1);
+		if (leapSound == null)
+			leapSound = Sound.ENDERDRAGON_WINGS.bukkitSound();
+		p.playSound(p.getLocation(), leapSound, 0.6f, 1);
 	}
 
 }

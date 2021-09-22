@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -19,6 +18,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.classes.Replaceable;
 import masecla.mlib.containers.generic.ImmutableContainer;
 import masecla.mlib.main.MLib;
@@ -46,7 +46,7 @@ public class CooldownsContainer extends ImmutableContainer {
 				lib.getConfigurationAPI().getConfig().set("strafes.cooldown", 20);
 			else
 				lib.getConfigurationAPI().getConfig().set("strafes.cooldown", -1);
-			p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.8f, 1);
+			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 			return;
 		}
 		if (event.getSlot() == 40) {
@@ -55,7 +55,7 @@ public class CooldownsContainer extends ImmutableContainer {
 				lib.getConfigurationAPI().getConfig().set("leap.cooldown", 20);
 			else
 				lib.getConfigurationAPI().getConfig().set("leap.cooldown", -1);
-			p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.8f, 1);
+			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 			return;
 		}
 
@@ -70,17 +70,17 @@ public class CooldownsContainer extends ImmutableContainer {
 		int cooldownValue = (int) lib.getConfigurationAPI().getConfig().get(path, 10);
 		if (cooldownValue == -1) {
 			lib.getMessagesAPI().sendMessage("cooldown-disabled", p);
-			p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 0.8f);
+			p.playSound(p.getLocation(), Sound.NOTE_BASS.bukkitSound(), 1, 0.8f);
 			return;
 		}
 
 		if (cooldownValue + amount <= 0 || cooldownValue + amount > 64) {
 			lib.getMessagesAPI().sendMessage("invalid-cooldown", p, new Replaceable("%value%", cooldownValue + amount));
-			p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 0.8f);
+			p.playSound(p.getLocation(), Sound.NOTE_BASS.bukkitSound(), 1, 0.8f);
 			return;
 		}
 		lib.getConfigurationAPI().getConfig().set(path, cooldownValue + amount);
-		p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.8f, 1);
+		p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 	}
 
 	@Override

@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -19,6 +18,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.containers.generic.ImmutableContainer;
 import masecla.mlib.main.MLib;
 import net.md_5.bungee.api.ChatColor;
@@ -45,7 +45,7 @@ public class VelocityContainer extends ImmutableContainer {
 		if (event.getSlot() == 22) {
 			lib.getConfigurationAPI().getConfig().set("strafes.strafe_velocity", 1.78);
 			lib.getConfigurationAPI().getConfig().set("strafes.vertical_velocity", 0.3);
-			p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.8f, 1);
+			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 			return;
 		}
 
@@ -53,7 +53,7 @@ public class VelocityContainer extends ImmutableContainer {
 		if (event.getSlot() == 40) {
 			lib.getConfigurationAPI().getConfig().set("leap.leap_velocity", 1.5);
 			lib.getConfigurationAPI().getConfig().set("leap.vertical_velocity", 0.4);
-			p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.8f, 1);
+			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 			return;
 		}
 		if (event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR))
@@ -68,22 +68,22 @@ public class VelocityContainer extends ImmutableContainer {
 			case "Leap":
 				lib.getConfigurationAPI().getConfig().set("leap.leap_velocity",
 						(double) lib.getConfigurationAPI().getConfig().get("leap.leap_velocity", 1.5) + value);
-				p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.8f, 1);
+				p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 				return;
 			case "Strafe":
 				lib.getConfigurationAPI().getConfig().set("strafes.strafe_velocity",
 						(double) lib.getConfigurationAPI().getConfig().get("strafes.strafe_velocity", 1.78) + value);
-				p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.8f, 1);
+				p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 				return;
 			case "LeapV":
 				lib.getConfigurationAPI().getConfig().set("leap.vertical_velocity",
 						(double) lib.getConfigurationAPI().getConfig().get("leap.vertical_velocity", 0.4) + value);
-				p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.8f, 1);
+				p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 				return;
 			case "StrafeV":
 				lib.getConfigurationAPI().getConfig().set("strafes.vertical_velocity",
 						(double) lib.getConfigurationAPI().getConfig().get("strafes.vertical_velocity", 0.3) + value);
-				p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.8f, 1);
+				p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 				return;
 			}
 		}
