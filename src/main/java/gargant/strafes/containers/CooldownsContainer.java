@@ -1,10 +1,8 @@
 package gargant.strafes.containers;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,17 +11,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 
 import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.classes.Replaceable;
+import masecla.mlib.classes.builders.ItemBuilder;
 import masecla.mlib.containers.generic.ImmutableContainer;
 import masecla.mlib.main.MLib;
 import net.md_5.bungee.api.ChatColor;
-import revive.retab.classes.skin.Skin;
 
 public class CooldownsContainer extends ImmutableContainer {
 
@@ -142,29 +136,9 @@ public class CooldownsContainer extends ImmutableContainer {
 	}
 
 	private ItemStack getInventoryClose() {
-		ItemStack result = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
-		SkullMeta theMeta = (SkullMeta) result.getItemMeta();
-		GameProfile profile = new Skin(
-				"ewogICJ0aW1lc3RhbXAiIDogMTYxNjI1ODY1NTExMiwKICAicHJvZmlsZUlkIiA6ICJiMGQ3MzJmZTAwZjc0MDdlOWU3Zjc0NjMwMWNkOThjYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJPUHBscyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lNDRlYWUyNTAxMzk4M2E5MWQ2YTY5YjFiZjExMjdjMjY0NTk5MWExZDIwNWY2ZTUzODY1OTQ3ZjE0ZDVmNDVlIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0=",
-				"XH3TZYlsF7xmneUF7Z5sKBFBSrMTI+tY64PbAeFJcH4MrHGz38Z5Lc9kub3qG20LJFa861mHFeIAq+Ca6aLFdE3+5hHrxGJalj+JoF8gFP2Fx0u9myy633IAU+Uj/MKCq1BXpEVeAcDBUMTn6S0/j5YUVi3Q9PWsBoBH5rQk4HYetW0LN0qmd9BJwxfB16xHJQxMrfrIGlpLfts8Md58p+Q1cvHU5ZiJjnmA5lP66YP15eduX6APwhW5somS8A7Cl/P4k+P08SjAudkvQzvM+TGj+Mz2jNFG3qSp2z2p/X/jooRByKWfPzwvQ/O1KuJrWKUC3kzXGPrMBHLXGv/Gti3EvMoKNM1+KKcq5s7T5ZYTlMhSnKBFKgB6W9fQtSyZtlmVN1MPI1tnUxOgU4lEYuVRAaSgM/VcYSSivHW+0+moRESIG0CpFluJsHtMQ/B4aMqEJXDVXxu+jC/SDkQ+MNJb62gleTGbEn8TUyHVLLLngVXMasGmh4HjZuazsLB1nCLjxXzXvMe72b9ovpwF0o3xRzDbcc6JvGk0ajshzneDbkl0ucStCv7xCfXP8zKXupGVfyo/0kuYhdMv5SpskVrfxSsFGoK/xjgY95hADQbCTuRoOyK+1PbQyYrHr9vfb/LmlonF0c/AbwCP7UrYfHVPuK+VM8HLT7Rk70oC5dA=")
-						.createProfile();
-		Field profileField = null;
-		try {
-			profileField = theMeta.getClass().getDeclaredField("profile");
-			profileField.setAccessible(true);
-			profileField.set(theMeta, profile);
-		} catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException
-				| SecurityException exception) {
-			// empty catch block
-		}
-		theMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&cClose!"));
-		ArrayList<String> thelore = new ArrayList<String>();
-		thelore.add(" ");
-		thelore.add(ChatColor.translateAlternateColorCodes('&', "&7Close this menu!"));
-		thelore.add(" ");
-		theMeta.setLore(thelore);
-		result.setItemMeta(theMeta);
-		return result;
+		return new ItemBuilder(Material.SKULL_ITEM).name("&cClose!").lore("", "&7Close this menu.").skull(
+				"ewogICJ0aW1lc3RhbXAiIDogMTY1MzAyMzMxMTcxNywKICAicHJvZmlsZUlkIiA6ICJjYmFkZmRmNTRkZTM0N2UwODQ3MjUyMDIyYTFkNGRkZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJmaXdpcGVlIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzUzYjQ4MDNkZjZmMDM5NWZkZGQ4NWUyN2ZhODM3YTVmMDExMjQ2NDA2YjAxZmZlNTVhYzJlOTJmYTc0OWNhNzkiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==")
+				.build(lib);
 	}
 
 	private Inventory applyMarginalBars(Inventory inv) {
@@ -195,56 +169,32 @@ public class CooldownsContainer extends ImmutableContainer {
 	}
 
 	private ItemStack getStrafeItem() {
-		ItemStack result = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-		ItemMeta theMeta = result.getItemMeta();
-		theMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&aStrafe Cooldown"));
-		List<String> thelore = new ArrayList<String>();
-		thelore.add("");
+		List<String> lore = new ArrayList<String>();
+		lore.add("");
 		int cooldown = (int) lib.getConfigurationAPI().getConfig().get("strafes.cooldown", 10);
 		if (cooldown != -1)
-			thelore.add(ChatColor.translateAlternateColorCodes('&',
+			lore.add(ChatColor.translateAlternateColorCodes('&',
 					"&2" + cooldown + " &aSecond" + (cooldown == 1 ? "" : "s")));
 		else
-			thelore.add(ChatColor.translateAlternateColorCodes('&', "&c&lDISABLED"));
-		thelore.add("");
-		thelore.add(ChatColor.GRAY + "Click to toggle.");
-		theMeta.setLore(thelore);
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&c&lDISABLED"));
+		lore.add("");
+		lore.add(ChatColor.GRAY + "Click to toggle.");
 
-		SkullMeta sk = (SkullMeta) theMeta;
-		try {
-			GameProfile profile = new GameProfile(UUID.randomUUID(), "");
-			profile.getProperties().put("textures",
-					new Property("textures", lib.getConfigurationAPI().getConfig().getString("heads.left.active")));
-			Field profileField = null;
-			try {
-				profileField = sk.getClass().getDeclaredField("profile");
-				profileField.setAccessible(true);
-				profileField.set(sk, profile);
-			} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-			}
-		} catch (Exception e) {
-		}
-
-		result.setItemMeta(sk);
-		return result;
+		return new ItemBuilder(Material.SKULL_ITEM).name("&aStrafe Cooldown").lore(lore)
+				.skull(lib.getConfigurationAPI().getConfig().getString("heads.left.active")).build(lib);
 	}
 
 	private ItemStack getLeap() {
-		ItemStack result = new ItemStack(Material.FEATHER);
-		ItemMeta theMeta = result.getItemMeta();
-		theMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&aLeap Cooldown"));
-		List<String> thelore = new ArrayList<String>();
-		thelore.add("");
+		List<String> lore = new ArrayList<String>();
+		lore.add("");
 		int cooldown = (int) lib.getConfigurationAPI().getConfig().get("leap.cooldown", 10);
 		if (cooldown != -1)
-			thelore.add(ChatColor.translateAlternateColorCodes('&',
+			lore.add(ChatColor.translateAlternateColorCodes('&',
 					"&2" + cooldown + " &aSecond" + (cooldown == 1 ? "" : "s")));
 		else
-			thelore.add(ChatColor.translateAlternateColorCodes('&', "&c&lDISABLED"));
-		thelore.add(ChatColor.GRAY + "Click to reset to default!");
-		theMeta.setLore(thelore);
-		result.setItemMeta(theMeta);
-		return result;
+			lore.add(ChatColor.translateAlternateColorCodes('&', "&c&lDISABLED"));
+		lore.add(ChatColor.GRAY + "Click to reset to default!");
+		return new ItemBuilder(Material.FEATHER).name("&aLeap Cooldown").lore(lore).build(lib);
 	}
 
 }
