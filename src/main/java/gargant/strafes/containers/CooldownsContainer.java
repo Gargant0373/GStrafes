@@ -1,7 +1,6 @@
 package gargant.strafes.containers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -10,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
+import masecla.mlib.apis.CompatibilityAPI.Versions;
 import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.classes.Replaceable;
 import masecla.mlib.classes.builders.ItemBuilder;
@@ -25,7 +24,6 @@ public class CooldownsContainer extends ImmutableContainer {
 		super(lib);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onTopClick(InventoryClickEvent event) {
 		event.setCancelled(true);
@@ -53,8 +51,8 @@ public class CooldownsContainer extends ImmutableContainer {
 			return;
 		}
 
-		String tag = lib.getNmsAPI().getNBTTagValueString(event.getCurrentItem(), "INCREMENT");
-		if (tag == null || !event.getCurrentItem().getType().equals(Material.WOOL))
+		String tag = lib.getNmsAPI().read(event.getCurrentItem()).getString("INCREMENT").getValue();
+		if (tag == null)
 			return;
 
 		int amount = Integer.parseInt(tag.split("_")[0]);
@@ -78,7 +76,7 @@ public class CooldownsContainer extends ImmutableContainer {
 	}
 
 	@Override
-	public int getSize() {
+	public int getSize(Player p) {
 		return 54;
 	}
 
@@ -94,7 +92,7 @@ public class CooldownsContainer extends ImmutableContainer {
 
 	@Override
 	public Inventory getInventory(Player p) {
-		Inventory inv = Bukkit.createInventory(p, getSize(), ChatColor.DARK_GREEN + "Strafe Cooldowns");
+		Inventory inv = Bukkit.createInventory(p, getSize(p), ChatColor.DARK_GREEN + "Strafe Cooldowns");
 		inv.setItem(19, this.getIncrement(-10, "Strafes"));
 		inv.setItem(20, this.getIncrement(-5, "Strafes"));
 		inv.setItem(21, this.getIncrement(-1, "Strafes"));
@@ -117,13 +115,14 @@ public class CooldownsContainer extends ImmutableContainer {
 	}
 
 	private ItemStack getIncrement(int amount, String type) {
-		ItemStack result = new ItemStack(Material.WOOL, 1, (byte) this.getColorFor(amount));
-		ItemMeta meta = result.getItemMeta();
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&2" + (amount > 0 ? "+" : "") + amount
-				+ " &aSecond" + (Math.abs(amount) == 1 ? "" : "s") + " to Cooldown"));
-		meta.setLore(Arrays.asList("", ChatColor.GRAY + "Click to use!"));
-		result.setItemMeta(meta);
-		return lib.getNmsAPI().write().tagString("INCREMENT", amount + "_" + type.toLowerCase()).applyOn(result);
+		ItemBuilder builder = new ItemBuilder();
+		if (lib.getCompatibilityApi().getServerVersion().lowerThanOr(Versions.v1_12_2))
+			builder.item(Material.matchMaterial("WOOL")).data(this.getColorFor(amount));
+		else
+			builder.item(Material.matchMaterial(convertColor(amount) + "_WOOL"));
+		return builder.name("&2" + (amount > 0 ? "+" : "") + amount
+				+ " &aSecond" + (Math.abs(amount) == 1 ? "" : "s") + " to Cooldown").lore("").lore("&7Click to use!")
+				.tagString("INCREMENT", amount + "_" + type.toLowerCase()).build(lib);
 	}
 
 	private int getColorFor(int count) {
@@ -135,8 +134,21 @@ public class CooldownsContainer extends ImmutableContainer {
 		return 14;
 	}
 
+	private String convertColor(int color) {
+		color = getColorFor(color);
+		switch (color) {
+			case 13:
+				return "GREEN";
+			case 1:
+				return "YELLOW";
+			case 14:
+				return "RED";
+		}
+		return "WHITE";
+	}
+
 	private ItemStack getInventoryClose() {
-		return new ItemBuilder(Material.SKULL_ITEM).name("&cClose!").lore("", "&7Close this menu.").skull(
+		return new ItemBuilder().name("&cClose!").lore("", "&7Close this menu.").skull(
 				"ewogICJ0aW1lc3RhbXAiIDogMTY1MzAyMzMxMTcxNywKICAicHJvZmlsZUlkIiA6ICJjYmFkZmRmNTRkZTM0N2UwODQ3MjUyMDIyYTFkNGRkZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJmaXdpcGVlIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzUzYjQ4MDNkZjZmMDM5NWZkZGQ4NWUyN2ZhODM3YTVmMDExMjQ2NDA2YjAxZmZlNTVhYzJlOTJmYTc0OWNhNzkiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==")
 				.build(lib);
 	}
@@ -149,8 +161,8 @@ public class CooldownsContainer extends ImmutableContainer {
 			inv.setItem(9 - i, marginalBar);
 
 			// Bottom bar
-			inv.setItem(i + this.getSize() - 9, marginalBar);
-			inv.setItem(this.getSize() - i - 1, marginalBar);
+			inv.setItem(i + this.getSize(null) - 9, marginalBar);
+			inv.setItem(this.getSize(null) - i - 1, marginalBar);
 
 			// Side bars
 			inv.setItem(i * 9, marginalBar);
@@ -161,11 +173,13 @@ public class CooldownsContainer extends ImmutableContainer {
 	}
 
 	private ItemStack getMarginalBar() {
-		ItemStack s = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 15);
-		ItemMeta meta = s.getItemMeta();
-		meta.setDisplayName(ChatColor.BLACK + "+");
-		s.setItemMeta(meta);
-		return s;
+		ItemBuilder builder = new ItemBuilder();
+		if (lib.getCompatibilityApi().getServerVersion().lowerThanOr(Versions.v1_12_2))
+			builder.item(Material.matchMaterial("STAINED_GLASS_PANE")).data(15);
+		else
+			builder.item(Material.matchMaterial("GRAY_STAINED_GLASS_PANE"));
+
+		return builder.empty().build(lib);
 	}
 
 	private ItemStack getStrafeItem() {
@@ -180,7 +194,7 @@ public class CooldownsContainer extends ImmutableContainer {
 		lore.add("");
 		lore.add(ChatColor.GRAY + "Click to toggle.");
 
-		return new ItemBuilder(Material.SKULL_ITEM).name("&aStrafe Cooldown").lore(lore)
+		return new ItemBuilder().name("&aStrafe Cooldown").lore(lore)
 				.skull(lib.getConfigurationAPI().getConfig().getString("heads.left.active")).build(lib);
 	}
 

@@ -40,6 +40,7 @@ public class StrafesCommand extends Registerable {
 		lib.getContainerAPI().openFor(p, CooldownsContainer.class);
 	}
 
+	@SuppressWarnings("deprecation")
 	@SubcommandInfo(subcommand = "help", permission = "strafes.help")
 	public void helpCommand(Player p) {
 		p.sendMessage(ChatColor.translateAlternateColorCodes('&',

@@ -47,47 +47,46 @@ public class StrafeClickListener extends Registerable {
 		if (this.justClicked.contains(p.getUniqueId()))
 			return;
 
-		@SuppressWarnings("deprecation")
-		String tag = lib.getNmsAPI().getNBTTagValueString(held, "StrafeDirection");
+		String tag = lib.getNmsAPI().read(held).getString("StrafeDirection").getValue();
 		if (tag == null)
 			return;
 		if (event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			switch (tag) {
-			case "RIGHT":
-			case "LEFT":
-			case "BACK":
-			case "LEAP":
-				event.setCancelled(true);
-				return;
+				case "RIGHT":
+				case "LEFT":
+				case "BACK":
+				case "LEAP":
+					event.setCancelled(true);
+					return;
 			}
 			return;
 		} else if (event.getAction().equals(Action.RIGHT_CLICK_AIR)
 				|| event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			switch (tag) {
-			case "RIGHT":
-				this.applyRightStrafe(p);
-				this.playStrafeSound(p);
-				new Cooldown(lib, p, CooldownType.STRAFES_RIGHT, items,
-						event.getPlayer().getInventory().getHeldItemSlot(), this.getStrafeCooldown()).register();
-				break;
-			case "LEFT":
-				this.applyLeftStrafe(p);
-				this.playStrafeSound(p);
-				new Cooldown(lib, p, CooldownType.STRAFES_LEFT, items,
-						event.getPlayer().getInventory().getHeldItemSlot(), this.getStrafeCooldown()).register();
-				break;
-			case "BACK":
-				this.applyBackStrafe(p);
-				this.playStrafeSound(p);
-				new Cooldown(lib, p, CooldownType.STRAFES_BACK, items,
-						event.getPlayer().getInventory().getHeldItemSlot(), this.getStrafeCooldown()).register();
-				break;
-			case "LEAP":
-				this.applyLeap(p);
-				this.applyLeapSound(p);
-				new Cooldown(lib, p, CooldownType.LEAP_FORWARD, items,
-						event.getPlayer().getInventory().getHeldItemSlot(), this.getLeapCooldown()).register();
-				break;
+				case "RIGHT":
+					this.applyRightStrafe(p);
+					this.playStrafeSound(p);
+					new Cooldown(lib, p, CooldownType.STRAFES_RIGHT, items,
+							event.getPlayer().getInventory().getHeldItemSlot(), this.getStrafeCooldown()).register();
+					break;
+				case "LEFT":
+					this.applyLeftStrafe(p);
+					this.playStrafeSound(p);
+					new Cooldown(lib, p, CooldownType.STRAFES_LEFT, items,
+							event.getPlayer().getInventory().getHeldItemSlot(), this.getStrafeCooldown()).register();
+					break;
+				case "BACK":
+					this.applyBackStrafe(p);
+					this.playStrafeSound(p);
+					new Cooldown(lib, p, CooldownType.STRAFES_BACK, items,
+							event.getPlayer().getInventory().getHeldItemSlot(), this.getStrafeCooldown()).register();
+					break;
+				case "LEAP":
+					this.applyLeap(p);
+					this.applyLeapSound(p);
+					new Cooldown(lib, p, CooldownType.LEAP_FORWARD, items,
+							event.getPlayer().getInventory().getHeldItemSlot(), this.getLeapCooldown()).register();
+					break;
 			}
 			this.justClicked.add(p.getUniqueId());
 			Bukkit.getScheduler().scheduleSyncDelayedTask(lib.getPlugin(), () -> {

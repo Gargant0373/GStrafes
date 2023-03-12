@@ -18,8 +18,7 @@ public class BlockPlaceRestriction extends Registerable {
 		if (event.getPlayer().getInventory().getItemInMainHand() == null)
 			return;
 		ItemStack held = event.getItemInHand();
-		@SuppressWarnings("deprecation")
-		String tag = lib.getNmsAPI().getNBTTagValueString(held, "StrafeDirection");
+		String tag = lib.getNmsAPI().read(held).getString("StrafeDirection").getValue();
 		if (tag == null)
 			return;
 		switch (tag) {

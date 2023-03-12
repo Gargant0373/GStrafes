@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import masecla.mlib.apis.CompatibilityAPI.Versions;
 import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.classes.builders.ItemBuilder;
 import masecla.mlib.containers.generic.ImmutableContainer;
@@ -86,7 +87,7 @@ public class VelocityContainer extends ImmutableContainer {
 	}
 
 	@Override
-	public int getSize() {
+	public int getSize(Player p) {
 		return 54;
 	}
 
@@ -102,7 +103,7 @@ public class VelocityContainer extends ImmutableContainer {
 
 	@Override
 	public Inventory getInventory(Player p) {
-		Inventory inv = Bukkit.createInventory(p, getSize(), ChatColor.DARK_GREEN + "Strafe Settings");
+		Inventory inv = Bukkit.createInventory(p, getSize(p), ChatColor.DARK_GREEN + "Strafe Settings");
 
 		inv.setItem(19, this.getIncrementItem(-1, "Strafe Velocity"));
 		inv.setItem(20, this.getIncrementItem(-0.5, "Strafe Velocity"));
@@ -143,13 +144,25 @@ public class VelocityContainer extends ImmutableContainer {
 	}
 
 	private ItemStack getIncrementItem(double count, String type) {
-		ItemStack res = new ItemStack(Material.WOOL, 1, (byte) this.getColorFor(count));
-		ItemMeta meta = res.getItemMeta();
-		meta.setDisplayName(
-				ChatColor.translateAlternateColorCodes('&', "&2" + (count < 0 ? count : "+" + count) + " &a" + type));
-		meta.setLore(Arrays.asList("", ChatColor.GRAY + "Click!"));
-		res.setItemMeta(meta);
-		return lib.getNmsAPI().write().tagString("Increment", type.split(" ")[0] + "_" + count).applyOn(res);
+		ItemBuilder builder = new ItemBuilder();
+		if (lib.getCompatibilityApi().getServerVersion().lowerThanOr(Versions.v1_12_2))
+			builder.item(Material.matchMaterial("WOOL")).data(this.getColorFor(count));
+		else
+			builder.item(Material.matchMaterial(convertColor(count) + "_WOOL"));
+		return builder.name("&2" + (count < 0 ? count : "+" + count) + " &a" + type).lore("").lore("&7Click!").tagString("Increment", type.split(" ")[0] + "_" + count).build(lib);
+	}
+
+	private String convertColor(double count) {
+		int color = getColorFor(count);
+		switch (color) {
+			case 13:
+				return "GREEN";
+			case 1:
+				return "YELLOW";
+			case 14:
+				return "RED";
+		}
+		return "WHITE";
 	}
 
 	private ItemStack getStrafeItem() {
@@ -163,7 +176,7 @@ public class VelocityContainer extends ImmutableContainer {
 						+ " &aVertical Velocity");
 		lore.add("");
 		lore.add(ChatColor.GRAY + "Click to reset to default!");
-		return new ItemBuilder(Material.SKULL_ITEM)
+		return new ItemBuilder()
 				.skull(lib.getConfigurationAPI().getConfig().getString("heads.left.active")).name("&aStrafe").lore(lore)
 				.build(lib);
 	}
@@ -191,7 +204,7 @@ public class VelocityContainer extends ImmutableContainer {
 	}
 
 	private ItemStack getInventoryClose() {
-		return new ItemBuilder(Material.SKULL_ITEM).name("&cClose!").lore("", "&7Close this menu.").skull(
+		return new ItemBuilder().name("&cClose!").lore("", "&7Close this menu.").skull(
 				"ewogICJ0aW1lc3RhbXAiIDogMTY1MzAyMzMxMTcxNywKICAicHJvZmlsZUlkIiA6ICJjYmFkZmRmNTRkZTM0N2UwODQ3MjUyMDIyYTFkNGRkZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJmaXdpcGVlIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzUzYjQ4MDNkZjZmMDM5NWZkZGQ4NWUyN2ZhODM3YTVmMDExMjQ2NDA2YjAxZmZlNTVhYzJlOTJmYTc0OWNhNzkiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==")
 				.build(lib);
 	}
@@ -204,8 +217,8 @@ public class VelocityContainer extends ImmutableContainer {
 			inv.setItem(9 - i, marginalBar);
 
 			// Bottom bar
-			inv.setItem(i + this.getSize() - 9, marginalBar);
-			inv.setItem(this.getSize() - i - 1, marginalBar);
+			inv.setItem(i + this.getSize(null) - 9, marginalBar);
+			inv.setItem(this.getSize(null) - i - 1, marginalBar);
 
 			// Side bars
 			inv.setItem(i * 9, marginalBar);
@@ -215,12 +228,14 @@ public class VelocityContainer extends ImmutableContainer {
 		return inv;
 	}
 
-	private ItemStack marginalBar;
-
 	private ItemStack getMarginalBar() {
-		if (this.marginalBar == null)
-			this.marginalBar = new ItemBuilder(Material.STAINED_GLASS_PANE).damage((byte) 15).empty().build(lib);
-		return marginalBar;
+		ItemBuilder builder = new ItemBuilder();
+		if (lib.getCompatibilityApi().getServerVersion().lowerThanOr(Versions.v1_12_2))
+			builder.item(Material.matchMaterial("STAINED_GLASS_PANE")).data(15);
+		else
+			builder.item(Material.matchMaterial("GRAY_STAINED_GLASS_PANE"));
+
+		return builder.empty().build(lib);
 	}
 
 }

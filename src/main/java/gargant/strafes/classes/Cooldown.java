@@ -44,15 +44,14 @@ public class Cooldown {
 		}, 20);
 	}
 
-	@SuppressWarnings("deprecation")
 	private void updateItem() {
 		if (player.getInventory().getItem(slot) == null
 				|| player.getInventory().getItem(slot).getType().equals(Material.AIR))
 			return;
+		ItemStack held = player.getInventory().getItem(slot);
 		int amount = player.getInventory().getItem(slot).getAmount();
-		if (lib.getNmsAPI().getNBTTagValueString(player.getInventory().getItem(slot), "StrafeDirection") == null
-				|| !lib.getNmsAPI().getNBTTagValueString(player.getInventory().getItem(slot), "StrafeDirection")
-						.equals("COOLDOWN"))
+		String tag = lib.getNmsAPI().read(held).getString("StrafeDirection").getValue();
+		if (tag == null || !tag.equals("COOLDOWN"))
 			return;
 		if (amount <= 1) {
 			player.getInventory().setItem(slot, this.getItemFor(type));
@@ -66,28 +65,28 @@ public class Cooldown {
 
 	private ItemStack getCooldownItemFor(CooldownType type) {
 		switch (type) {
-		case STRAFES_LEFT:
-			return items.getLeftCooldown(cooldown);
-		case STRAFES_RIGHT:
-			return items.getRightCooldown(cooldown);
-		case STRAFES_BACK:
-			return items.getBackCooldown(cooldown);
-		case LEAP_FORWARD:
-			return items.getCooldownLeap(cooldown);
+			case STRAFES_LEFT:
+				return items.getLeftCooldown(cooldown);
+			case STRAFES_RIGHT:
+				return items.getRightCooldown(cooldown);
+			case STRAFES_BACK:
+				return items.getBackCooldown(cooldown);
+			case LEAP_FORWARD:
+				return items.getCooldownLeap(cooldown);
 		}
 		return items.getLeap();
 	}
 
 	private ItemStack getItemFor(CooldownType type) {
 		switch (type) {
-		case STRAFES_LEFT:
-			return items.getLeftStrafe();
-		case STRAFES_RIGHT:
-			return items.getRightStrafe();
-		case STRAFES_BACK:
-			return items.getBackStrafe();
-		case LEAP_FORWARD:
-			return items.getLeap();
+			case STRAFES_LEFT:
+				return items.getLeftStrafe();
+			case STRAFES_RIGHT:
+				return items.getRightStrafe();
+			case STRAFES_BACK:
+				return items.getBackStrafe();
+			case LEAP_FORWARD:
+				return items.getLeap();
 		}
 		return items.getLeap();
 	}
