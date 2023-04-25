@@ -35,7 +35,7 @@ public class StrafesCommand extends Registerable {
 		lib.getContainerAPI().openFor(p, VelocityContainer.class);
 	}
 
-	@SubcommandInfo(subcommand = "cooldowns", permission = "strafes.cooldowns")
+	@SubcommandInfo(subcommand = "cooldowns", permission = "strafes.cooldowns", aliases = { "cds", "cooldown" })
 	public void cooldownContainer(Player p) {
 		lib.getContainerAPI().openFor(p, CooldownsContainer.class);
 	}
