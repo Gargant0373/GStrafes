@@ -92,7 +92,7 @@ public class StrafesCommand extends Registerable {
 		p.sendMessage(
 				ChatColor.translateAlternateColorCodes('&', "&a/strafes velocity &7- &fOpen the Velocity container."));
 		p.sendMessage(
-				ChatColor.translateAlternateColorCodes('&', "&a/strafes velocity &7<&fstrafes&7/&fleap&7> &7<&fvalue 1&7> <&fvalue 2&7> - &fOpen the Velocity container."));
+				ChatColor.translateAlternateColorCodes('&', "&a/strafes velocity &7<&fstrafe&7/&fleap&7> &7<&fvalue 1&7> <&fvalue 2&7> - &fOpen the Velocity container."));
 		ComponentBuilder b = new ComponentBuilder(ChatColor.WHITE + "Enjoy strafing? Rate this plugin!");
 		b.event(new ClickEvent(Action.OPEN_URL,
 				"https://www.spigotmc.org/resources/%E2%9C%A8-restrafes-strafe-around-your-world-%E2%9C%A8.96036/"));
