@@ -17,6 +17,10 @@ public class DatabaseService {
         lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".cooldown", cooldown);
     }
 
+    public void setVelocity(DatabaseType type, double velocity) {
+        lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".velocity", velocity);
+    }
+
     public double getVelocity(DatabaseType type) {
         return lib.getConfigurationAPI().getConfig().getDouble(type.name().toLowerCase() + ".velocity",
                 type.getDefaultVelocity());
@@ -25,6 +29,10 @@ public class DatabaseService {
     public void incrementVelocity(DatabaseType type, double velocity) {
         lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".velocity",
                 Double.sum(getVelocity(type), velocity));
+    }
+
+    public void setVerticalVelocity(DatabaseType type, double velocity) {
+        lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".vertical_velocity", velocity);
     }
 
     public double getVerticalVelocity(DatabaseType type) {

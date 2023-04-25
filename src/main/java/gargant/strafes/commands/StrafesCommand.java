@@ -10,6 +10,8 @@ import org.bukkit.inventory.PlayerInventory;
 import gargant.strafes.classes.Items;
 import gargant.strafes.containers.CooldownsContainer;
 import gargant.strafes.containers.VelocityContainer;
+import gargant.strafes.services.DatabaseService;
+import gargant.strafes.services.DatabaseService.DatabaseType;
 import masecla.mlib.annotations.RegisterableInfo;
 import masecla.mlib.annotations.SubcommandInfo;
 import masecla.mlib.classes.Registerable;
@@ -24,15 +26,53 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class StrafesCommand extends Registerable {
 
 	private Items items;
+	private DatabaseService databaseService;
 
-	public StrafesCommand(MLib lib, Items items) {
+	public StrafesCommand(MLib lib, Items items, DatabaseService databaseService) {
 		super(lib);
 		this.items = items;
+		this.databaseService = databaseService;
 	}
 
-	@SubcommandInfo(subcommand = "velocity", permission = "strafes.velocity")
+	@SubcommandInfo(subcommand = "velocity", permission = "strafes.velocity", aliases = { "vel" })
 	public void velocityContainer(Player p) {
 		lib.getContainerAPI().openFor(p, VelocityContainer.class);
+	}
+
+	@SubcommandInfo(subcommand = "velocity strafe", permission = "strafes.velocity")
+	public void velocityStrafeEdit(Player p, String velocityString, String verticalVelocityString) {
+		double velocity = 0;
+		double verticalVelocity = 0;
+
+		try {
+			velocity = Double.parseDouble(velocityString);
+			verticalVelocity = Double.parseDouble(verticalVelocityString);
+		} catch (NumberFormatException e) {
+			lib.getMessagesAPI().sendMessage("invalid-number", p);
+			return;
+		}
+
+		databaseService.setVelocity(DatabaseType.STRAFES, velocity);
+		databaseService.setVerticalVelocity(DatabaseType.STRAFES, verticalVelocity);
+		lib.getMessagesAPI().sendMessage("velocity-set", p);
+	}
+
+	@SubcommandInfo(subcommand = "velocity leap", permission = "strafes.velocity")
+	public void velocityLeapEdit(Player p, String velocityString, String verticalVelocityString) {
+		double velocity = 0;
+		double verticalVelocity = 0;
+
+		try {
+			velocity = Double.parseDouble(velocityString);
+			verticalVelocity = Double.parseDouble(verticalVelocityString);
+		} catch (NumberFormatException e) {
+			lib.getMessagesAPI().sendMessage("invalid-number", p);
+			return;
+		}
+
+		databaseService.setVelocity(DatabaseType.LEAP, velocity);
+		databaseService.setVerticalVelocity(DatabaseType.LEAP, verticalVelocity);
+		lib.getMessagesAPI().sendMessage("velocity-set", p);
 	}
 
 	@SubcommandInfo(subcommand = "cooldowns", permission = "strafes.cooldowns", aliases = { "cds", "cooldown" })
@@ -51,6 +91,8 @@ public class StrafesCommand extends Registerable {
 				ChatColor.translateAlternateColorCodes('&', "&a/strafes cooldowns &7- &fOpen the Settings container."));
 		p.sendMessage(
 				ChatColor.translateAlternateColorCodes('&', "&a/strafes velocity &7- &fOpen the Velocity container."));
+		p.sendMessage(
+				ChatColor.translateAlternateColorCodes('&', "&a/strafes velocity &7<&fstrafes&7/&fleap&7> &7<&fvalue 1&7> <&fvalue 2&7> - &fOpen the Velocity container."));
 		ComponentBuilder b = new ComponentBuilder(ChatColor.WHITE + "Enjoy strafing? Rate this plugin!");
 		b.event(new ClickEvent(Action.OPEN_URL,
 				"https://www.spigotmc.org/resources/%E2%9C%A8-restrafes-strafe-around-your-world-%E2%9C%A8.96036/"));

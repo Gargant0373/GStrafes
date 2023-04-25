@@ -7,3 +7,5 @@ messages:
      no-space: "&cYou don't have any space in your inventory..."
      invalid-cooldown: "&cCooldowns should be between 1 and 64 seconds!" # Use %value% for cooldown value placeholder.
      cooldown-disabled: "&cCooldowns disabled. Please re-enable before editing!"
+     invalid-number: "&cInvalid number!"
+     velocity-set: "&aVelocity is updated!"

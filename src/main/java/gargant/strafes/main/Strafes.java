@@ -29,7 +29,7 @@ public class Strafes extends JavaPlugin {
 		new VelocityContainer(lib, databaseService).register();
 		new CooldownsContainer(lib, databaseService).register();
 
-		new StrafesCommand(lib, items).register();
+		new StrafesCommand(lib, items, databaseService).register();
 		new LeapCommand(lib, items).register();
 
 		new BlockPlaceRestriction(lib).register();

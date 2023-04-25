@@ -12,7 +12,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import be.maximvdw.placeholderapi.internal.PlaceholderReplacer.DataType;
 import gargant.strafes.services.DatabaseService;
 import gargant.strafes.services.DatabaseService.DatabaseType;
 import masecla.mlib.apis.CompatibilityAPI.Versions;
