@@ -17,6 +17,6 @@ public class DatabaseService {
     }
 
     public enum DatabaseType {
-        STRAFE, LEAP;
+        STRAFES, LEAP;
     }
 }

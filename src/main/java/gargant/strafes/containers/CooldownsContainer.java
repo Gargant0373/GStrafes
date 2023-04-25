@@ -10,10 +10,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import gargant.strafes.classes.Cooldown.CooldownType;
 import gargant.strafes.services.DatabaseService;
 import gargant.strafes.services.DatabaseService.DatabaseType;
-import lombok.AllArgsConstructor;
 import masecla.mlib.apis.CompatibilityAPI.Versions;
 import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.classes.Replaceable;
@@ -40,13 +38,11 @@ public class CooldownsContainer extends ImmutableContainer {
 			return;
 		}
 		if (event.getSlot() == 22) {
-			int cooldown = databaseService.getCooldown(DatabaseType.STRAFE);
+			int cooldown = databaseService.getCooldown(DatabaseType.STRAFES);
 			if (cooldown == -1)
-				databaseService.setCooldown(DatabaseType.STRAFE, 20);
+				databaseService.setCooldown(DatabaseType.STRAFES, 20);
 			else
-				databaseService.setCooldown(DatabaseType.STRAFE, -1);
-			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
-			return;
+				databaseService.setCooldown(DatabaseType.STRAFES, -1);
 		}
 		if (event.getSlot() == 40) {
 			int cooldown = databaseService.getCooldown(DatabaseType.LEAP);
