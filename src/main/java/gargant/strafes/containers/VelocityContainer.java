@@ -12,6 +12,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import be.maximvdw.placeholderapi.internal.PlaceholderReplacer.DataType;
+import gargant.strafes.services.DatabaseService;
+import gargant.strafes.services.DatabaseService.DatabaseType;
 import masecla.mlib.apis.CompatibilityAPI.Versions;
 import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.classes.builders.ItemBuilder;
@@ -21,8 +24,11 @@ import net.md_5.bungee.api.ChatColor;
 
 public class VelocityContainer extends ImmutableContainer {
 
-	public VelocityContainer(MLib lib) {
+	private DatabaseService databaseService;
+
+	public VelocityContainer(MLib lib, DatabaseService databaseService) {
 		super(lib);
+		this.databaseService = databaseService;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -38,16 +44,14 @@ public class VelocityContainer extends ImmutableContainer {
 
 		// Reset Strafe Velocities
 		if (event.getSlot() == 22) {
-			lib.getConfigurationAPI().getConfig().set("strafes.strafe_velocity", 1.78);
-			lib.getConfigurationAPI().getConfig().set("strafes.vertical_velocity", 0.3);
+			databaseService.resetVelocity(DatabaseType.STRAFES);
 			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 			return;
 		}
 
 		// Reset Leap Velocities
 		if (event.getSlot() == 40) {
-			lib.getConfigurationAPI().getConfig().set("leap.leap_velocity", 1.5);
-			lib.getConfigurationAPI().getConfig().set("leap.vertical_velocity", 0.4);
+			databaseService.resetVelocity(DatabaseType.LEAP);
 			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 			return;
 		}
@@ -61,25 +65,19 @@ public class VelocityContainer extends ImmutableContainer {
 			double value = Double.parseDouble(tag.split("_")[1]);
 			switch (type) {
 				case "Leap":
-					lib.getConfigurationAPI().getConfig().set("leap.leap_velocity",
-							(double) lib.getConfigurationAPI().getConfig().get("leap.leap_velocity", 1.5) + value);
+					databaseService.incrementVelocity(DatabaseType.LEAP, value);
 					p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 					return;
 				case "Strafe":
-					lib.getConfigurationAPI().getConfig().set("strafes.strafe_velocity",
-							(double) lib.getConfigurationAPI().getConfig().get("strafes.strafe_velocity", 1.78)
-									+ value);
+					databaseService.incrementVelocity(DatabaseType.STRAFES, value);
 					p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 					return;
 				case "LeapV":
-					lib.getConfigurationAPI().getConfig().set("leap.vertical_velocity",
-							(double) lib.getConfigurationAPI().getConfig().get("leap.vertical_velocity", 0.4) + value);
+					databaseService.incrementVerticalVelocity(DatabaseType.LEAP, value);
 					p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 					return;
 				case "StrafeV":
-					lib.getConfigurationAPI().getConfig().set("strafes.vertical_velocity",
-							(double) lib.getConfigurationAPI().getConfig().get("strafes.vertical_velocity", 0.3)
-									+ value);
+					databaseService.incrementVerticalVelocity(DatabaseType.STRAFES, value);
 					p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 					return;
 			}
@@ -149,7 +147,8 @@ public class VelocityContainer extends ImmutableContainer {
 			builder.item(Material.matchMaterial("WOOL")).data(this.getColorFor(count));
 		else
 			builder.item(Material.matchMaterial(convertColor(count) + "_WOOL"));
-		return builder.name("&2" + (count < 0 ? count : "+" + count) + " &a" + type).lore("").lore("&7Click!").tagString("Increment", type.split(" ")[0] + "_" + count).build(lib);
+		return builder.name("&2" + (count < 0 ? count : "+" + count) + " &a" + type).lore("").lore("&7Click!")
+				.tagString("Increment", type.split(" ")[0] + "_" + count).build(lib);
 	}
 
 	private String convertColor(double count) {
@@ -169,10 +168,10 @@ public class VelocityContainer extends ImmutableContainer {
 		List<String> lore = new ArrayList<String>();
 		lore.add("");
 		lore.add(
-				"&2" + (double) lib.getConfigurationAPI().getConfig().get("strafes.strafe_velocity", 1.78)
+				"&2" + databaseService.getVelocity(DatabaseType.STRAFES)
 						+ " &aStrafe Velocity");
 		lore.add(
-				"&2" + (double) lib.getConfigurationAPI().getConfig().get("strafes.vertical_velocity", 0.3)
+				"&2" + databaseService.getVerticalVelocity(DatabaseType.STRAFES)
 						+ " &aVertical Velocity");
 		lore.add("");
 		lore.add(ChatColor.GRAY + "Click to reset to default!");
@@ -185,9 +184,9 @@ public class VelocityContainer extends ImmutableContainer {
 		List<String> lore = new ArrayList<String>();
 		lore.add("");
 		lore.add(ChatColor.translateAlternateColorCodes('&', "&2"
-				+ (double) lib.getConfigurationAPI().getConfig().get("leap.leap_velocity", 1.5) + " &aLeap Velocity"));
+				+ databaseService.getVelocity(DatabaseType.LEAP) + " &aLeap Velocity"));
 		lore.add(ChatColor.translateAlternateColorCodes('&',
-				"&2" + (double) lib.getConfigurationAPI().getConfig().get("leap.vertical_velocity", 0.4)
+				"&2" + databaseService.getVerticalVelocity(DatabaseType.LEAP)
 						+ " &aVertical Velocity"));
 		lore.add("");
 		lore.add(ChatColor.GRAY + "Click to reset to default!");

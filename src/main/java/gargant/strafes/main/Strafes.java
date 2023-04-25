@@ -26,7 +26,7 @@ public class Strafes extends JavaPlugin {
 		this.items = new Items(lib);
 		this.databaseService = new DatabaseService(lib);
 
-		new VelocityContainer(lib).register();
+		new VelocityContainer(lib, databaseService).register();
 		new CooldownsContainer(lib, databaseService).register();
 
 		new StrafesCommand(lib, items).register();

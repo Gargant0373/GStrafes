@@ -9,10 +9,10 @@ heads:
       active: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2I4M2JiY2NmNGYwYzg2YjEyZjZmNzk5ODlkMTU5NDU0YmY5MjgxOTU1ZDdlMjQxMWNlOThjMWI4YWEzOGQ4In19fQ==
       cooldown: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDFiNjJkYjVjMGEzZmExZWY0NDFiZjcwNDRmNTExYmU1OGJlZGY5YjY3MzE4NTNlNTBjZTkwY2Q0NGZiNjkifX19
 leap:
-  leap_velocity: 1.5
+  velocity: 1.5
   vertical_velocity: 0.4
   cooldown: 8 # -1 for disabled
 strafes:
-  strafe_velocity: 1.78
+  velocity: 1.78
   vertical_velocity: 0.3
   cooldown: 20 # -1 for disabled
