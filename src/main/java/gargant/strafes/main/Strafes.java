@@ -9,12 +9,14 @@ import gargant.strafes.containers.CooldownsContainer;
 import gargant.strafes.containers.VelocityContainer;
 import gargant.strafes.listeners.BlockPlaceRestriction;
 import gargant.strafes.listeners.StrafeClickListener;
+import gargant.strafes.services.DatabaseService;
 import masecla.mlib.main.MLib;
 
 public class Strafes extends JavaPlugin {
 
 	private MLib lib;
 	private Items items;
+	private DatabaseService databaseService;
 
 	@Override
 	public void onEnable() {
@@ -24,7 +26,7 @@ public class Strafes extends JavaPlugin {
 		this.items = new Items(lib);
 
 		new VelocityContainer(lib).register();
-		new CooldownsContainer(lib).register();
+		new CooldownsContainer(lib, databaseService).register();
 
 		new StrafesCommand(lib, items).register();
 		new LeapCommand(lib, items).register();

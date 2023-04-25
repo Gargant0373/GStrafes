@@ -10,6 +10,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import gargant.strafes.classes.Cooldown.CooldownType;
+import gargant.strafes.services.DatabaseService;
+import gargant.strafes.services.DatabaseService.DatabaseType;
+import lombok.AllArgsConstructor;
 import masecla.mlib.apis.CompatibilityAPI.Versions;
 import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.classes.Replaceable;
@@ -20,8 +24,11 @@ import net.md_5.bungee.api.ChatColor;
 
 public class CooldownsContainer extends ImmutableContainer {
 
-	public CooldownsContainer(MLib lib) {
+	private DatabaseService databaseService;
+
+	public CooldownsContainer(MLib lib, DatabaseService databaseService) {
 		super(lib);
+		this.databaseService = databaseService;
 	}
 
 	@Override
@@ -33,20 +40,20 @@ public class CooldownsContainer extends ImmutableContainer {
 			return;
 		}
 		if (event.getSlot() == 22) {
-			int cooldown = (int) lib.getConfigurationAPI().getConfig().get("strafes.cooldown", 20);
+			int cooldown = databaseService.getCooldown(DatabaseType.STRAFE);
 			if (cooldown == -1)
-				lib.getConfigurationAPI().getConfig().set("strafes.cooldown", 20);
+				databaseService.setCooldown(DatabaseType.STRAFE, 20);
 			else
-				lib.getConfigurationAPI().getConfig().set("strafes.cooldown", -1);
+				databaseService.setCooldown(DatabaseType.STRAFE, -1);
 			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 			return;
 		}
 		if (event.getSlot() == 40) {
-			int cooldown = (int) lib.getConfigurationAPI().getConfig().get("leap.cooldown", 20);
+			int cooldown = databaseService.getCooldown(DatabaseType.LEAP);
 			if (cooldown == -1)
-				lib.getConfigurationAPI().getConfig().set("leap.cooldown", 20);
+				databaseService.setCooldown(DatabaseType.LEAP, 20);
 			else
-				lib.getConfigurationAPI().getConfig().set("leap.cooldown", -1);
+				databaseService.setCooldown(DatabaseType.LEAP, -1);
 			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 			return;
 		}
@@ -56,10 +63,9 @@ public class CooldownsContainer extends ImmutableContainer {
 			return;
 
 		int amount = Integer.parseInt(tag.split("_")[0]);
-		String type = tag.split("_")[1];
-		String path = type + ".cooldown";
+		DatabaseType type = DatabaseType.valueOf(tag.split("_")[1].toUpperCase());
 
-		int cooldownValue = (int) lib.getConfigurationAPI().getConfig().get(path, 10);
+		int cooldownValue = databaseService.getCooldown(type);
 		if (cooldownValue == -1) {
 			lib.getMessagesAPI().sendMessage("cooldown-disabled", p);
 			p.playSound(p.getLocation(), Sound.NOTE_BASS.bukkitSound(), 1, 0.8f);
@@ -71,7 +77,8 @@ public class CooldownsContainer extends ImmutableContainer {
 			p.playSound(p.getLocation(), Sound.NOTE_BASS.bukkitSound(), 1, 0.8f);
 			return;
 		}
-		lib.getConfigurationAPI().getConfig().set(path, cooldownValue + amount);
+
+		databaseService.setCooldown(type, cooldownValue + amount);
 		p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
 	}
 

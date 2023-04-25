@@ -65,7 +65,7 @@ public class StrafesCommand extends Registerable {
 			return;
 		Player p = (Player) sender;
 
-		if (!sender.hasPermission("strafes.strafes")) {
+		if (!p.hasPermission("strafes.strafes")) {
 			lib.getMessagesAPI().sendMessage("no-permission", sender);
 			return;
 		}
