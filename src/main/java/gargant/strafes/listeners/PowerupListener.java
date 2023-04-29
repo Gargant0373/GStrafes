@@ -1,7 +1,9 @@
 package gargant.strafes.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -29,6 +31,20 @@ public class PowerupListener extends Registerable {
         if (!(steppingOn.getRelative(0, -1, 0).getState() instanceof Sign))
             return;
         Sign sign = (Sign) steppingOn.getRelative(0, -1, 0).getState();
-        powerupService.applyPowerup(ev.getPlayer(), sign.getLines(), steppingOn.getLocation());
+        this.applyPowerup(ev.getPlayer(), sign.getLines(), steppingOn.getLocation());
+    }
+
+    private void applyPowerup(Player p, String[] lines, Location loc) {
+        if (powerupService.getPowerup(lines[0]) == null) {
+            return;
+        }
+        try {
+            powerupService.getPowerup(lines[0]).apply(p, Integer.parseInt(lines[1]) - 1,
+                    20 * Integer.parseInt(lines[2]));
+        } catch (NumberFormatException ex) {
+            lib.getLoggerAPI().error("Invalid number formatted in powerup sign! [" + loc.toString() + "]");
+        } catch (NullPointerException ex) {
+            lib.getLoggerAPI().error("Invalid powerup sign! [" + loc.toString() + "]");
+        }
     }
 }

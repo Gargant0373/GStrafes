@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import masecla.mlib.main.MLib;
 
+/**
+ * Class responsible for handling all database related operations.
+ */
 @AllArgsConstructor
 public class DatabaseService {
 
