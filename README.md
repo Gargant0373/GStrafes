@@ -4,11 +4,17 @@ This Strafes plugin was made in order to offer the same expereicence as the one 
 
 # Commands
 /leap - Gives the item for leaping to a player (_strafes.leap_)
+
 /strafes - Gives the items for strafing to a player (_strafes.strafes_)
+
 /strafes help - Sends help message (_strafes.help_)
+
 /strafes velocity - Opens the container for velocity editing (_strafes.velocity_)
+
 /strafes velocity strafe <horizontal> <vertical> - Sets the values for strafe velocities (_strafes.velocity_)
+
 /strafes velocity leap <horizontal> <vertical> - Sets the values for leap velocities (_strafes.velocity_)
+
 /strafes cooldowns/cds/cooldown - Opens the container for cooldown editing (_strafes.cooldowns_)
 
 # Setting up powerups
