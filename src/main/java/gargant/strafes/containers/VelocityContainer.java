@@ -30,7 +30,6 @@ public class VelocityContainer extends ImmutableContainer {
 		this.databaseService = databaseService;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onTopClick(InventoryClickEvent event) {
 		event.setCancelled(true);
@@ -58,26 +57,26 @@ public class VelocityContainer extends ImmutableContainer {
 			return;
 
 		// Incrementing and decrementing
-		String tag = lib.getNmsAPI().getNBTTagValueString(event.getCurrentItem(), "Increment");
+		String tag = lib.getNmsAPI().read(event.getCurrentItem()).getString("Increment").getValue();
 		if (tag != null) {
 			String type = tag.split("_")[0];
 			double value = Double.parseDouble(tag.split("_")[1]);
 			switch (type) {
 				case "Leap":
 					databaseService.incrementVelocity(DatabaseType.LEAP, value);
-					p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
+					p.playSound(p.getLocation(), Sound.LEVEL_UP.bukkitSound(), 0.8f, 1);
 					return;
 				case "Strafe":
 					databaseService.incrementVelocity(DatabaseType.STRAFES, value);
-					p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
+					p.playSound(p.getLocation(), Sound.LEVEL_UP.bukkitSound(), 0.8f, 1);
 					return;
 				case "LeapV":
 					databaseService.incrementVerticalVelocity(DatabaseType.LEAP, value);
-					p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
+					p.playSound(p.getLocation(), Sound.LEVEL_UP.bukkitSound(), 0.8f, 1);
 					return;
 				case "StrafeV":
 					databaseService.incrementVerticalVelocity(DatabaseType.STRAFES, value);
-					p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
+					p.playSound(p.getLocation(), Sound.LEVEL_UP.bukkitSound(), 0.8f, 1);
 					return;
 			}
 		}

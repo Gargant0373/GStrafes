@@ -13,7 +13,7 @@
 
 	<groupId>${groupid}</groupId>
 	<artifactId>${artifact}</artifactId>
-	<version>1.3.5</version>
+	<version>1.4</version>
 
 	<build>
 		<plugins>

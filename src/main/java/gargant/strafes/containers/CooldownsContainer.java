@@ -50,7 +50,7 @@ public class CooldownsContainer extends ImmutableContainer {
 				databaseService.setCooldown(DatabaseType.LEAP, 20);
 			else
 				databaseService.setCooldown(DatabaseType.LEAP, -1);
-			p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
+			p.playSound(p.getLocation(), Sound.LEVEL_UP.bukkitSound(), 0.8f, 1);
 			return;
 		}
 
@@ -75,7 +75,7 @@ public class CooldownsContainer extends ImmutableContainer {
 		}
 
 		databaseService.setCooldown(type, cooldownValue + amount);
-		p.playSound(p.getLocation(), Sound.ARROW_HIT.bukkitSound(), 0.8f, 1);
+		p.playSound(p.getLocation(), Sound.LEVEL_UP.bukkitSound(), 0.8f, 1);
 	}
 
 	@Override

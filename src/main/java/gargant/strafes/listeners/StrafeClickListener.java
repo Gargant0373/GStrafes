@@ -17,6 +17,8 @@ import org.bukkit.util.Vector;
 
 import gargant.strafes.classes.Cooldown;
 import gargant.strafes.classes.Cooldown.CooldownType;
+import gargant.strafes.services.DatabaseService;
+import gargant.strafes.services.DatabaseService.DatabaseType;
 import gargant.strafes.classes.Items;
 import masecla.mlib.apis.SoundAPI.Sound;
 import masecla.mlib.classes.Registerable;
@@ -25,10 +27,12 @@ import masecla.mlib.main.MLib;
 public class StrafeClickListener extends Registerable {
 
 	private Items items;
+	private DatabaseService databaseService;
 
-	public StrafeClickListener(MLib lib, Items items) {
+	public StrafeClickListener(MLib lib, Items items, DatabaseService databaseService) {
 		super(lib);
 		this.items = items;
+		this.databaseService = databaseService;
 	}
 
 	private Set<UUID> justClicked = new HashSet<>();
@@ -67,25 +71,29 @@ public class StrafeClickListener extends Registerable {
 					this.applyRightStrafe(p);
 					this.playStrafeSound(p);
 					new Cooldown(lib, p, CooldownType.STRAFES_RIGHT, items,
-							event.getPlayer().getInventory().getHeldItemSlot(), this.getStrafeCooldown()).register();
+							event.getPlayer().getInventory().getHeldItemSlot(),
+							databaseService.getCooldown(DatabaseType.STRAFES)).register();
 					break;
 				case "LEFT":
 					this.applyLeftStrafe(p);
 					this.playStrafeSound(p);
 					new Cooldown(lib, p, CooldownType.STRAFES_LEFT, items,
-							event.getPlayer().getInventory().getHeldItemSlot(), this.getStrafeCooldown()).register();
+							event.getPlayer().getInventory().getHeldItemSlot(),
+							databaseService.getCooldown(DatabaseType.STRAFES)).register();
 					break;
 				case "BACK":
 					this.applyBackStrafe(p);
 					this.playStrafeSound(p);
 					new Cooldown(lib, p, CooldownType.STRAFES_BACK, items,
-							event.getPlayer().getInventory().getHeldItemSlot(), this.getStrafeCooldown()).register();
+							event.getPlayer().getInventory().getHeldItemSlot(),
+							databaseService.getCooldown(DatabaseType.STRAFES)).register();
 					break;
 				case "LEAP":
 					this.applyLeap(p);
 					this.applyLeapSound(p);
 					new Cooldown(lib, p, CooldownType.LEAP_FORWARD, items,
-							event.getPlayer().getInventory().getHeldItemSlot(), this.getLeapCooldown()).register();
+							event.getPlayer().getInventory().getHeldItemSlot(),
+							databaseService.getCooldown(DatabaseType.LEAP)).register();
 					break;
 			}
 			this.justClicked.add(p.getUniqueId());
@@ -99,8 +107,9 @@ public class StrafeClickListener extends Registerable {
 		Location locVec = player.getLocation().clone();
 		locVec = this.snapYaw(locVec);
 		locVec.setPitch(0);
-		Vector velocityVector = locVec.getDirection().multiply(-1.0).multiply(this.getStrafeVelocity());
-		velocityVector = velocityVector.setY(this.getStrafeVerticalVelocity());
+		Vector velocityVector = locVec.getDirection().multiply(-1.0)
+				.multiply(databaseService.getVelocity(DatabaseType.STRAFES));
+		velocityVector = velocityVector.setY(databaseService.getVerticalVelocity(DatabaseType.STRAFES));
 		player.setVelocity(velocityVector);
 	}
 
@@ -117,8 +126,8 @@ public class StrafeClickListener extends Registerable {
 		z = aux;
 		velocityVector.setX(x);
 		velocityVector.setZ(z);
-		velocityVector = velocityVector.multiply(this.getStrafeVelocity());
-		velocityVector = velocityVector.setY(this.getStrafeVerticalVelocity());
+		velocityVector = velocityVector.multiply(databaseService.getVelocity(DatabaseType.STRAFES));
+		velocityVector = velocityVector.setY(databaseService.getVerticalVelocity(DatabaseType.STRAFES));
 		player.setVelocity(velocityVector);
 	}
 
@@ -135,15 +144,15 @@ public class StrafeClickListener extends Registerable {
 		z = aux;
 		velocityVector.setX(x);
 		velocityVector.setZ(z);
-		velocityVector = velocityVector.multiply(this.getStrafeVelocity());
-		velocityVector = velocityVector.setY(this.getStrafeVerticalVelocity());
+		velocityVector = velocityVector.multiply(databaseService.getVelocity(DatabaseType.STRAFES));
+		velocityVector = velocityVector.setY(databaseService.getVerticalVelocity(DatabaseType.STRAFES));
 		player.setVelocity(velocityVector);
 	}
 
 	private void applyLeap(Player p) {
 		Vector v = p.getLocation().getDirection();
-		v.multiply(this.getLeapVelocity());
-		v.setY(this.getLeapVerticalVelocity());
+		v.multiply(databaseService.getVelocity(DatabaseType.LEAP));
+		v.setY(databaseService.getVerticalVelocity(DatabaseType.LEAP));
 		p.setVelocity(v);
 	}
 
@@ -164,30 +173,6 @@ public class StrafeClickListener extends Registerable {
 
 		location.setYaw(settableYaw + 90);
 		return location;
-	}
-
-	private double getStrafeVelocity() {
-		return (double) lib.getConfigurationAPI().getConfig().get("strafes.strafe_velocity", 1.78);
-	}
-
-	private double getStrafeVerticalVelocity() {
-		return (double) lib.getConfigurationAPI().getConfig().get("strafes.vertical_velocity", 0.3);
-	}
-
-	private double getLeapVelocity() {
-		return (double) lib.getConfigurationAPI().getConfig().get("leap.leap_velocity", 1.5);
-	}
-
-	private double getLeapVerticalVelocity() {
-		return (double) lib.getConfigurationAPI().getConfig().get("leap.vertical_velocity", 0.4);
-	}
-
-	private int getStrafeCooldown() {
-		return lib.getConfigurationAPI().getConfig().getInt("strafes.cooldown", 20);
-	}
-
-	private int getLeapCooldown() {
-		return lib.getConfigurationAPI().getConfig().getInt("leap.cooldown", 8);
 	}
 
 	private org.bukkit.Sound strafeSound = null;
