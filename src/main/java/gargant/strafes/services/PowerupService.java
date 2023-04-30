@@ -1,5 +1,6 @@
 package gargant.strafes.services;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,14 @@ public class PowerupService {
      */
     public Powerup getPowerup(String name) {
         return powerups.get(name.toLowerCase());
+    }
+
+    /**
+     * Gets all powerups
+     * @return {@link Collection<Powerup>} all powerups
+     */
+    public Collection<Powerup> getPowerups() {
+        return powerups.values();
     }
 
     /**
