@@ -12,5 +12,11 @@ public abstract class Powerup {
     @Getter
     private String name;
 
+    /**
+     * Applies the powerup to a player
+     * @param player the {@link Player} to apply to
+     * @param level the level of the powerup
+     * @param duration the duration of the powerup
+     */
     public abstract void apply(Player p, int level, int duration);
 }
