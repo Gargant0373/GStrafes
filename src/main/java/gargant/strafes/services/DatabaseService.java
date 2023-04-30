@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import masecla.mlib.main.MLib;
 
+/**
+ * Class responsible for handling all database related operations.
+ */
 @AllArgsConstructor
 public class DatabaseService {
 
@@ -51,6 +54,9 @@ public class DatabaseService {
                 type.getDefaultVerticalVelocity());
     }
 
+    /**
+     * Enum containing all the database types (strafes and leap).
+     */
     @AllArgsConstructor
     public enum DatabaseType {
         STRAFES(1.78, 0.3), LEAP(1.5, 0.4);

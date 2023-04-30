@@ -15,7 +15,7 @@ public class EffectPowerup extends Powerup {
 
     @Override
     public void apply(Player p, int level, int duration) {
-        p.addPotionEffect(new PotionEffect(this.effect, duration, level));
+        p.addPotionEffect(new PotionEffect(this.effect, duration, level - 1));
     }
 
 }

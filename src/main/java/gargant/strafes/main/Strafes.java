@@ -3,6 +3,7 @@ package gargant.strafes.main;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import gargant.strafes.classes.Items;
+import gargant.strafes.classes.StrafesAPI;
 import gargant.strafes.commands.LeapCommand;
 import gargant.strafes.commands.StrafesCommand;
 import gargant.strafes.containers.CooldownsContainer;
@@ -12,6 +13,7 @@ import gargant.strafes.listeners.PowerupListener;
 import gargant.strafes.listeners.StrafeClickListener;
 import gargant.strafes.services.DatabaseService;
 import gargant.strafes.services.PowerupService;
+import lombok.Getter;
 import masecla.mlib.main.MLib;
 
 public class Strafes extends JavaPlugin {
@@ -20,6 +22,9 @@ public class Strafes extends JavaPlugin {
 	private Items items;
 	private DatabaseService databaseService;
 	private PowerupService powerupService;
+
+	@Getter
+	private static StrafesAPI api;
 
 	@Override
 	public void onEnable() {
@@ -30,6 +35,8 @@ public class Strafes extends JavaPlugin {
 		this.databaseService = new DatabaseService(lib);
 		this.powerupService = new PowerupService(lib);
 		this.powerupService.load();
+
+		api = new StrafesAPI(databaseService, powerupService);
 
 		new VelocityContainer(lib, databaseService).register();
 		new CooldownsContainer(lib, databaseService).register();
