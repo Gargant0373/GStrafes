@@ -39,7 +39,7 @@ public class PowerupListener extends Registerable {
             return;
         }
         try {
-            powerupService.getPowerup(lines[0]).apply(p, Integer.parseInt(lines[1]) - 1,
+            powerupService.getPowerup(lines[0]).apply(p, Integer.parseInt(lines[1]),
                     20 * Integer.parseInt(lines[2]));
         } catch (NumberFormatException ex) {
             lib.getLoggerAPI().error("Invalid number formatted in powerup sign! [" + loc.toString() + "]");
