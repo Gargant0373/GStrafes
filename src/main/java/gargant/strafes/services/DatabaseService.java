@@ -30,8 +30,11 @@ public class DatabaseService {
     }
 
     public void incrementVelocity(DatabaseType type, double velocity) {
+        int vel = (int) (getVelocity(type) * 100);
+        vel += velocity * 100;
+        double newVel = vel / 100d;
         lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".velocity",
-                Double.sum(getVelocity(type), velocity));
+                newVel);
     }
 
     public void setVerticalVelocity(DatabaseType type, double velocity) {
@@ -44,8 +47,11 @@ public class DatabaseService {
     }
 
     public void incrementVerticalVelocity(DatabaseType type, double velocity) {
+        int vel = (int) (getVerticalVelocity(type) * 100);
+        vel += velocity * 100;
+        double newVel = vel / 100d;
         lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".vertical_velocity",
-                Double.sum(getVerticalVelocity(type), velocity));
+                newVel);
     }
 
     public void resetVelocity(DatabaseType type) {
