@@ -1,10 +1,13 @@
 package gargant.strafes.services;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.potion.PotionEffectType;
@@ -14,6 +17,7 @@ import gargant.strafes.classes.EffectPowerup;
 import gargant.strafes.classes.Powerup;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import masecla.mlib.apis.CompatibilityAPI.Versions;
 import masecla.mlib.main.MLib;
 
 /**
@@ -96,34 +100,51 @@ public class PowerupService {
         // Checking on block
         for (int i = -1; i <= 1; i += 2) {
             Block rel = b.getRelative(i, 0, 0);
-            if (rel.getState().getBlockData() instanceof WallSign) {
-                WallSign sign = (WallSign) rel.getState().getBlockData();
-                Block attached = rel.getRelative(sign.getFacing().getOppositeFace());
-                if (!attached.getLocation().equals(b.getLocation())) {
-                    return null;
-                }
-                BlockSign blockSign = new BlockSign(lib, b, ((Sign) rel.getState()).getLines());
-                signCache.put(b, blockSign);
-                cacheTime.put(b, System.currentTimeMillis());
-                return blockSign;
-            }
+            BlockSign sign = checkSign(b, rel);
+            if (sign != null)
+                return sign;
         }
 
         for (int i = -1; i <= 1; i += 2) {
             Block rel = b.getRelative(0, 0, i);
-            if (rel.getState().getBlockData() instanceof WallSign) {
-                WallSign sign = (WallSign) rel.getState().getBlockData();
-                Block attached = rel.getRelative(sign.getFacing().getOppositeFace());
-                if (!attached.getLocation().equals(b.getLocation())) {
-                    return null;
-                }
-                BlockSign blockSign = new BlockSign(lib, b, ((Sign) rel.getState()).getLines());
-                signCache.put(b, blockSign);
-                cacheTime.put(b, System.currentTimeMillis());
-                return blockSign;
-            }
+            BlockSign sign = checkSign(b, rel);
+            if (sign != null)
+                return sign;
         }
 
+        return null;
+    }
+
+    @SuppressWarnings("deprecation")
+    private BlockSign checkSign(Block b, Block rel) {
+        if (rel.getState() instanceof Sign
+                || (lib.getCompatibilityApi().getServerVersion().higherThanOr(Versions.v1_13)
+                        && rel.getState().getBlockData() instanceof WallSign)) {
+            BlockFace face = null;
+            String[] lines = ((Sign) rel.getState()).getLines();
+            if (lib.getCompatibilityApi().getServerVersion().lowerThanOr(Versions.v1_13)) {
+                org.bukkit.material.Sign sign = (org.bukkit.material.Sign) rel.getState().getData();
+                Method facing;
+                try {
+                    facing = sign.getClass().getMethod("getFacing");
+                    face = (BlockFace) facing.invoke(sign);
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException
+                        | IllegalArgumentException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                face = ((WallSign) rel.getState().getBlockData()).getFacing();
+            }
+            Block attached = rel.getRelative(face.getOppositeFace());
+            if (!attached.getLocation().equals(b.getLocation())) {
+                return null;
+            }
+
+            BlockSign blockSign = new BlockSign(lib, b, lines);
+            signCache.put(b, blockSign);
+            cacheTime.put(b, System.currentTimeMillis());
+            return blockSign;
+        }
         return null;
     }
 }
