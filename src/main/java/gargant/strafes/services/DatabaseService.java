@@ -60,6 +60,14 @@ public class DatabaseService {
                 type.getDefaultVerticalVelocity());
     }
 
+    public int getPowerupCacheTime() {
+        return (int) lib.getConfigurationAPI().getConfig().get("powerup-cache", 5000);
+    }
+
+    public void setPowerupCachetime(int value) {
+        lib.getConfigurationAPI().getConfig().set("powerup-cache", value);
+    }
+
     /**
      * Enum containing all the database types (strafes and leap).
      */

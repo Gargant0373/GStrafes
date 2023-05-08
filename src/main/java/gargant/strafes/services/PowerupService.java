@@ -24,6 +24,8 @@ public class PowerupService {
 
     @NonNull
     private MLib lib;
+    @NonNull
+    private DatabaseService databaseService;
     private Map<String, Powerup> powerups = new HashMap<>();
     private Map<Block, BlockSign> signCache = new HashMap<>();
     private Map<Block, Long> cacheTime = new HashMap<>();
@@ -74,7 +76,7 @@ public class PowerupService {
             return null;
 
         if (signCache.containsKey(b)) {
-            if (cacheTime.get(b) + 5000 < System.currentTimeMillis()) {
+            if (cacheTime.get(b) + databaseService.getPowerupCacheTime() < System.currentTimeMillis()) {
                 signCache.remove(b);
                 cacheTime.remove(b);
             } else {

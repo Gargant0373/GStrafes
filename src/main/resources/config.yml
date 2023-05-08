@@ -1,3 +1,10 @@
+# ..............................................................
+# .               REStrafes Configuration File                 .
+# .                   - author @Gargant -                      .
+# ..............................................................
+
+
+# Values for the texture for strafes
 heads:
    left:
       active: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjUzNDc0MjNlZTU1ZGFhNzkyMzY2OGZjYTg1ODE5ODVmZjUzODlhNDU0MzUzMjFlZmFkNTM3YWYyM2QifX19
@@ -8,11 +15,25 @@ heads:
    backwards:
       active: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2I4M2JiY2NmNGYwYzg2YjEyZjZmNzk5ODlkMTU5NDU0YmY5MjgxOTU1ZDdlMjQxMWNlOThjMWI4YWEzOGQ4In19fQ==
       cooldown: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDFiNjJkYjVjMGEzZmExZWY0NDFiZjcwNDRmNTExYmU1OGJlZGY5YjY3MzE4NTNlNTBjZTkwY2Q0NGZiNjkifX19
+
+# Velocity values for the leap
 leap:
+  # Horizontal velocity multiplier
   velocity: 1.5
+  # Vertical velocity multiplier
   vertical_velocity: 0.4
+  # Cooldown for the leap in seconds
   cooldown: 8 # -1 for disabled
+
+# Velocity values for the strafes
 strafes:
+  # Horizontal velocity multiplier
   velocity: 1.78
+  # Vertical velocity multiplier
   vertical_velocity: 0.3
+  # Cooldown for the strafes in seconds
   cooldown: 20 # -1 for disabled
+
+# The higher this value is the more efficient the plugin is.
+# If you're editing maps it's not recommended to make it longer than 5 seconds.
+powerup-cache: 5000 # 5 seconds
