@@ -84,27 +84,41 @@ public class PowerupService {
 
         // Checking underneath
         if (b.getRelative(0, -1, 0).getState() instanceof Sign) {
-            BlockSign sign = new BlockSign(lib, ((Sign) b.getRelative(0, -1, 0).getState()).getLines());
+            BlockSign sign = new BlockSign(lib, b,
+                    ((Sign) b.getRelative(0, -1, 0).getState()).getLines());
             signCache.put(b, sign);
             cacheTime.put(b, System.currentTimeMillis());
             return sign;
         }
 
         // Checking on block
-        for (int x = -1; x <= 1; x += 1) {
-            for (int z = -1; z <= 1; z += 1) {
-                Block rel = b.getRelative(x, 0, z);
-                if (rel.getState().getBlockData() instanceof WallSign) {
-                    WallSign sign = (WallSign) rel.getState().getBlockData();
-                    Block attached = rel.getRelative(sign.getFacing().getOppositeFace());
-                    if (!attached.getLocation().equals(b.getLocation())) {
-                        return null;
-                    }
-                    BlockSign blockSign = new BlockSign(lib, ((Sign) rel.getState()).getLines());
-                    signCache.put(b, blockSign);
-                    cacheTime.put(b, System.currentTimeMillis());
-                    return blockSign;
+        for (int i = -1; i <= 1; i += 2) {
+            Block rel = b.getRelative(i, 0, 0);
+            if (rel.getState().getBlockData() instanceof WallSign) {
+                WallSign sign = (WallSign) rel.getState().getBlockData();
+                Block attached = rel.getRelative(sign.getFacing().getOppositeFace());
+                if (!attached.getLocation().equals(b.getLocation())) {
+                    return null;
                 }
+                BlockSign blockSign = new BlockSign(lib, b, ((Sign) rel.getState()).getLines());
+                signCache.put(b, blockSign);
+                cacheTime.put(b, System.currentTimeMillis());
+                return blockSign;
+            }
+        }
+
+        for (int i = -1; i <= 1; i += 2) {
+            Block rel = b.getRelative(0, 0, i);
+            if (rel.getState().getBlockData() instanceof WallSign) {
+                WallSign sign = (WallSign) rel.getState().getBlockData();
+                Block attached = rel.getRelative(sign.getFacing().getOppositeFace());
+                if (!attached.getLocation().equals(b.getLocation())) {
+                    return null;
+                }
+                BlockSign blockSign = new BlockSign(lib, b, ((Sign) rel.getState()).getLines());
+                signCache.put(b, blockSign);
+                cacheTime.put(b, System.currentTimeMillis());
+                return blockSign;
             }
         }
 
