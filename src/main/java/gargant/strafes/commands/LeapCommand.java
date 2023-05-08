@@ -30,6 +30,7 @@ public class LeapCommand extends Registerable {
 			return;
 		}
 		Player p = (Player) sender;
+		this.removeBoostItems(p);
 		if (!this.setItem(items.getLeap(), 4, p)) {
 			lib.getMessagesAPI().sendMessage("no-space", sender);
 			return;
@@ -60,6 +61,17 @@ public class LeapCommand extends Registerable {
 			p.getInventory().addItem(is);
 		}
 		return true;
+	}
+	private void removeBoostItems(Player player) {
+		PlayerInventory inv = player.getInventory();
+		String itemTag;
+		for (int i = 0; i <= inv.getSize(); i++) {
+			if (inv.getItem(i) != null) {
+				itemTag = lib.getNmsAPI().read(inv.getItem(i)).getString("StrafeDirection").getValue();
+				if (items.containsBoostTag(itemTag))
+					player.getInventory().setItem(i, null);
+			}
+		}
 	}
 
 }

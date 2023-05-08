@@ -70,6 +70,21 @@ public class Items {
 				.tagString("StrafeDirection", "COOLDOWN").build(lib);
 	}
 
+	public boolean containsBoostTag(String tag) {		//Todo: Sorry. No idea where else to put this...
+		if (tag == null)
+			return false;
+		switch (tag) {
+			case "BACK":
+			case "RIGHT":
+			case "LEFT":
+			case "LEAP":
+			case "COOLDOWN":
+				return true;
+			default:
+				return false;
+		}
+	}
+
 	private Material head;
 
 	private Material getHead() {
