@@ -1,6 +1,6 @@
-name: Strafes
+name: GStrafes
 main: gargant.strafes.main.Strafes
-version: '1.4.1'
+version: '1.4.2'
 author: Gargant
 api-version: 1.13
 commands:

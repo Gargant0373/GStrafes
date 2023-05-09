@@ -5,7 +5,7 @@
 
 	<properties>
 		<groupid>Gargant</groupid>
-		<artifact>REStrafes</artifact>
+		<artifact>GStrafes</artifact>
 
 		<project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>Cp1252</project.reporting.outputEncoding>
@@ -13,7 +13,7 @@
 
 	<groupId>${groupid}</groupId>
 	<artifactId>${artifact}</artifactId>
-	<version>1.4.1</version>
+	<version>1.4.2</version>
 
 	<build>
 		<plugins>
