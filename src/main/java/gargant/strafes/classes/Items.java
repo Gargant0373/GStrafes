@@ -70,7 +70,7 @@ public class Items {
 				.tagString("StrafeDirection", "COOLDOWN").build(lib);
 	}
 
-	public boolean containsBoostTag(String tag) {		//Todo: Sorry. No idea where else to put this...
+	public boolean containsBoostTag(String tag) {
 		if (tag == null)
 			return false;
 		switch (tag) {
