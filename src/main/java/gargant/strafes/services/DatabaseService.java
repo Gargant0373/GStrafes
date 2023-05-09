@@ -30,8 +30,11 @@ public class DatabaseService {
     }
 
     public void incrementVelocity(DatabaseType type, double velocity) {
+        int vel = (int) (getVelocity(type) * 100);
+        vel += velocity * 100;
+        double newVel = vel / 100d;
         lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".velocity",
-                Double.sum(getVelocity(type), velocity));
+                newVel);
     }
 
     public void setVerticalVelocity(DatabaseType type, double velocity) {
@@ -44,14 +47,25 @@ public class DatabaseService {
     }
 
     public void incrementVerticalVelocity(DatabaseType type, double velocity) {
+        int vel = (int) (getVerticalVelocity(type) * 100);
+        vel += velocity * 100;
+        double newVel = vel / 100d;
         lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".vertical_velocity",
-                Double.sum(getVerticalVelocity(type), velocity));
+                newVel);
     }
 
     public void resetVelocity(DatabaseType type) {
         lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".velocity", type.getDefaultVelocity());
         lib.getConfigurationAPI().getConfig().set(type.name().toLowerCase() + ".vertical_velocity",
                 type.getDefaultVerticalVelocity());
+    }
+
+    public int getPowerupCacheTime() {
+        return (int) lib.getConfigurationAPI().getConfig().get("powerup-cache", 5000);
+    }
+
+    public void setPowerupCachetime(int value) {
+        lib.getConfigurationAPI().getConfig().set("powerup-cache", value);
     }
 
     /**

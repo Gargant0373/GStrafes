@@ -33,7 +33,7 @@ public class Strafes extends JavaPlugin {
 
 		this.items = new Items(lib);
 		this.databaseService = new DatabaseService(lib);
-		this.powerupService = new PowerupService(lib);
+		this.powerupService = new PowerupService(lib, databaseService);
 		this.powerupService.load();
 
 		api = new StrafesAPI(databaseService, powerupService);
