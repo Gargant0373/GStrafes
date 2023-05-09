@@ -34,7 +34,7 @@ public class StrafesCommand extends Registerable {
 		this.databaseService = databaseService;
 	}
 
-	@SubcommandInfo(subcommand = "velocity", permission = "strafes.velocity", aliases = { "vel" })
+	@SubcommandInfo(subcommand = "velocity", permission = "strafes.velocity", aliases = {"vel"})
 	public void velocityContainer(Player p) {
 		lib.getContainerAPI().openFor(p, VelocityContainer.class);
 	}
@@ -75,7 +75,7 @@ public class StrafesCommand extends Registerable {
 		lib.getMessagesAPI().sendMessage("velocity-set", p);
 	}
 
-	@SubcommandInfo(subcommand = "cooldowns", permission = "strafes.cooldowns", aliases = { "cds", "cooldown" })
+	@SubcommandInfo(subcommand = "cooldowns", permission = "strafes.cooldowns", aliases = {"cds", "cooldown"})
 	public void cooldownContainer(Player p) {
 		lib.getContainerAPI().openFor(p, CooldownsContainer.class);
 	}
@@ -111,6 +111,7 @@ public class StrafesCommand extends Registerable {
 			lib.getMessagesAPI().sendMessage("no-permission", sender);
 			return;
 		}
+		this.removeBoostItems(p);
 		if (!this.hasSlots(p, 3)) {
 			lib.getMessagesAPI().sendMessage("no-space", sender);
 			return;
@@ -164,6 +165,18 @@ public class StrafesCommand extends Registerable {
 			p.getInventory().addItem(is);
 		}
 		return true;
+	}
+
+	private void removeBoostItems(Player player) {
+		PlayerInventory inv = player.getInventory();
+		String itemTag;
+		for (int i = 0; i <= inv.getSize(); i++) {
+			if (inv.getItem(i) != null) {
+				itemTag = lib.getNmsAPI().read(inv.getItem(i)).getString("StrafeDirection").getValue();
+				if (items.containsBoostTag(itemTag))
+					player.getInventory().setItem(i, null);
+			}
+		}
 	}
 
 }

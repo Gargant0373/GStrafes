@@ -1,4 +1,5 @@
 
+
 # Strafes Plugin
 This Strafes plugin was made in order to offer the same expereicence as the one on Hive. This plugin mainly serves the purpose to help map markers in their endeavours of making further DeathRun maps, in order to test them.
 
@@ -31,6 +32,12 @@ Jump powerups are setup exactly the same, but with "jump" instead of "speed" on 
 The project uses Maven, with no local dependencies. Therefore building it is as simple as cloning the project and running 
 ```mvn clean verify``` 
 inside the directory. Results of the compilation can be found in `/target/`
+
+### API
+If you want to use the API feel free to take a look at the [Powerup Demo](https://github.com/Gargant0373/PowerupDemo) I wrote. 
+
+You can use the code as a dependency from JitPack:
+[![](https://jitpack.io/v/Gargant0373/REStrafes.svg)](https://jitpack.io/#Gargant0373/REStrafes)
 
 ### Contributing
 If you want to contribute to the project, all you have to do is to fork the project, make the wanted changes, and create a branch with a description of your feature.
