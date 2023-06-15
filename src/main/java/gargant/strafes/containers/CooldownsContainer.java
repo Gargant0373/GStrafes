@@ -55,7 +55,7 @@ public class CooldownsContainer extends ImmutableContainer {
 		}
 
 		String tag = lib.getNmsAPI().read(event.getCurrentItem()).getString("INCREMENT").getValue();
-		if (tag == null)
+		if (tag == null || tag.isEmpty())
 			return;
 
 		int amount = Integer.parseInt(tag.split("_")[0]);

@@ -35,10 +35,15 @@ public class Cooldown {
 			return;
 		}
 
+		if(cooldown == -1)
+			return;
+
 		ItemStack cr = this.getCooldownItemFor(type).clone();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(lib.getPlugin(), () -> {
 			player.getInventory().setItem(slot, cr);
 		}, 1);
+
+
 		Bukkit.getScheduler().scheduleSyncDelayedTask(lib.getPlugin(), () -> {
 			this.updateItem();
 		}, 20);
