@@ -90,6 +90,7 @@ public class PowerupService {
 
         // Checking underneath
         if (b.getRelative(0, -1, 0).getState() instanceof Sign) {
+            @SuppressWarnings("deprecation")
             BlockSign sign = new BlockSign(lib, b,
                     ((Sign) b.getRelative(0, -1, 0).getState()).getLines());
             signCache.put(b, sign);
