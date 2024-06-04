@@ -6,3 +6,5 @@ dependency-reduced-pom.xml
 .vscode/settings.json
 deploy.sh
 *.sh
+.idea
+*.iml
